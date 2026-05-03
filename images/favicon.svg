@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="4" fill="oklch(44% 0.155 30)"/>
+  <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="700" fill="oklch(98% 0.004 30)">A</text>
+  <text x="16" y="30" text-anchor="middle" font-family="Menlo, monospace" font-size="5" letter-spacing="0.5" fill="oklch(90% 0.022 30)">SSP</text>
+</svg>
