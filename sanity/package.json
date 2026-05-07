@@ -1,0 +1,18 @@
+{
+  "name": "assp-studio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "start": "sanity start"
+  },
+  "dependencies": {
+    "sanity": "^3",
+    "@sanity/vision": "^3"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

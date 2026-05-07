@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Programs — Action Sports Safety Project"
+  description="Our two programs: tuition grants for medical certifications, and on-site emergency response training at community events."
+>
+  <Header />
+
+  <main id="main-content">
+    <section class="page-hero" aria-labelledby="programs-title">
+      <div class="page-hero-inner">
+        <div>
+          <p class="page-hero-eyebrow" aria-hidden="true">Programs</p>
+          <h1 class="page-hero-title" id="programs-title">
+            Two programs. Both put trained responders on the ground.
+          </h1>
+        </div>
+        <p class="page-hero-lede">
+          We fund medical certifications for individuals, and we run hands-on safety
+          clinics at the events the community already shows up to. Pick the path that fits.
+        </p>
+      </div>
+    </section>
+
+    <section class="programs">
+      <div class="programs-inner">
+        <article class="program">
+          <div>
+            <p class="program-index">
+              <span class="program-index__num">01</span>
+              <span>Tuition grants</span>
+            </p>
+            <h2 class="program-title">We pay for the certification.</h2>
+          </div>
+          <div>
+            <p class="program-body">
+              Athletes, coaches, park staff, and event organizers apply for funding to
+              cover an approved medical training course. Our Grant Review Board scores
+              applications on community impact and financial need. Awards are paid
+              directly to the training provider. There is no reimbursement paperwork on
+              the recipient.
+            </p>
+            <p class="program-body">
+              After the course, the recipient sends back a certificate and a short note on
+              how they plan to use it. That is the entire reporting requirement.
+            </p>
+            <p class="program-meta">
+              <span>EMT-Basic</span>
+              <span>Wilderness First Responder</span>
+              <span>Wilderness First Aid</span>
+              <span>CPR / AED</span>
+              <span>NOLS Wilderness Medicine</span>
+            </p>
+            <p style="margin-top: var(--s-8);">
+              <a href="/grants" class="btn btn-primary">Apply for a grant</a>
+            </p>
+          </div>
+        </article>
+
+        <article class="program">
+          <div>
+            <p class="program-index">
+              <span class="program-index__num">02</span>
+              <span>On-site training</span>
+            </p>
+            <h2 class="program-title">We bring the training to your community.</h2>
+          </div>
+          <div>
+            <p class="program-body">
+              At skate jams, climbing meets, bike park weekends, and surf contests, our
+              team runs hands-on safety clinics covering scene assessment, bleeding
+              control, spinal precaution, and what to do in the first ten minutes of a
+              serious injury. Sessions are short, repeat throughout the day, and built for
+              people who would rather be riding.
+            </p>
+            <p class="program-body">
+              Event organizers cover travel only. Curriculum, instructors, and supplies
+              are donor-funded. We work with shops, parks, and contest series. If there is
+              a gathering of fifty or more people, we can be there.
+            </p>
+            <p class="program-meta">
+              <span>Free for community events</span>
+              <span>30 to 90 minute sessions</span>
+              <span>Bilingual on request</span>
+            </p>
+            <p style="margin-top: var(--s-8);">
+              <a href="/contact" class="btn btn-primary">Request a clinic</a>
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="donate-cta" aria-labelledby="programs-cta">
+      <div class="donate-cta-inner">
+        <div>
+          <p class="donate-cta-eyebrow" aria-hidden="true">Fund the work</p>
+          <h2 class="donate-cta-headline" id="programs-cta">
+            Programs run on donations. Every gift lands on a tuition invoice or a clinic
+            kit.
+          </h2>
+        </div>
+        <div class="donate-cta-actions">
+          <a href="/donate" class="btn btn-white">Donate now</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

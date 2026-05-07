@@ -1,0 +1,73 @@
+---
+// Fixed top navigation with terracotta background and a mobile drawer.
+---
+
+<nav class="nav" id="site-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="Action Sports Safety Project, home">
+    <span class="nav-logo__name">Action Sports Safety Project</span>
+    <span class="nav-logo__tag" aria-hidden="true">501(c)(3) Public Benefit</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="/about">About</a></li>
+    <li><a href="/programs">Programs</a></li>
+    <li><a href="/grants">Grants</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li><a href="/donate" class="nav-donate">Donate</a></li>
+  </ul>
+  <button
+    class="nav-burger"
+    id="nav-burger"
+    aria-controls="nav-drawer"
+    aria-expanded="false"
+    aria-label="Open navigation menu"
+  >
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation" aria-hidden="true">
+  <a href="/about" class="drawer-link">About</a>
+  <a href="/programs" class="drawer-link">Programs</a>
+  <a href="/grants" class="drawer-link">Grants</a>
+  <a href="/contact" class="drawer-link">Contact</a>
+  <a href="/donate" class="drawer-link drawer-donate">Donate</a>
+</nav>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const hero = document.querySelector('.hero');
+  if (nav && hero) {
+    const navObserver = new IntersectionObserver(
+      ([entry]) => nav.classList.toggle('nav--scrolled', !entry.isIntersecting),
+      { threshold: 0, rootMargin: '-56px 0px 0px 0px' }
+    );
+    navObserver.observe(hero);
+  }
+
+  const burger = document.getElementById('nav-burger');
+  const drawer = document.getElementById('nav-drawer');
+  if (burger && drawer) {
+    const drawerLinks = drawer.querySelectorAll('a');
+    const openDrawer = () => {
+      burger.setAttribute('aria-expanded', 'true');
+      drawer.classList.add('is-open');
+      drawer.removeAttribute('aria-hidden');
+      document.body.style.overflow = 'hidden';
+      (drawerLinks[0] as HTMLElement | undefined)?.focus();
+    };
+    const closeDrawer = () => {
+      burger.setAttribute('aria-expanded', 'false');
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      burger.focus();
+    };
+    burger.addEventListener('click', () => {
+      burger.getAttribute('aria-expanded') === 'true' ? closeDrawer() : openDrawer();
+    });
+    drawerLinks.forEach((link) => link.addEventListener('click', closeDrawer));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+    });
+  }
+</script>

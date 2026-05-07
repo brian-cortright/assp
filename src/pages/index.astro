@@ -1,0 +1,254 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Topography from '../components/Topography.astro';
+
+const board = [
+  { name: 'Brian Cortright', role: 'Founder', initials: 'BC' },
+  { name: 'Amy Ginn', role: 'Board Director', initials: 'AG' },
+  { name: 'Alex George', role: 'Board Director', initials: 'AG' },
+  { name: 'Max Dubler', role: 'Board Director', initials: 'MD' },
+  { name: 'Terry Welliver', role: 'Board Director', initials: 'TW' },
+];
+---
+
+<Base>
+  <Header />
+
+  <main id="main-content">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <Topography />
+      <div class="hero-inner">
+        <p class="hero-eyebrow" aria-hidden="true">
+          Est. 2024 &nbsp;·&nbsp; California &nbsp;·&nbsp; 501(c)(3)
+        </p>
+        <h1 class="hero-headline" id="hero-headline">
+          Keeping the action sports community safe.
+        </h1>
+        <p class="hero-sub">
+          We fund tuition grants for medical certifications, so that when accidents happen,
+          someone nearby knows exactly what to do. For skaters, climbers, riders, and
+          everyone in between.
+        </p>
+        <div class="hero-actions">
+          <a href="#donate" class="btn btn-white">Donate now</a>
+          <a href="#programs" class="btn btn-outline">Apply for a grant</a>
+        </div>
+      </div>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span class="hero-scroll__line"></span>
+        <span class="hero-scroll__label">Scroll to learn more</span>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="problem" id="problem" aria-labelledby="problem-headline">
+      <div class="problem-inner">
+        <h2 class="problem-statement" id="problem-headline">
+          Action sports happen far from the people trained to help.
+        </h2>
+        <div>
+          <p class="problem-body">
+            A skate park on a Saturday afternoon. A backcountry climbing zone two
+            switchbacks past cell coverage. A bike park with one ranger and forty riders.
+            These are the places we love. They are also places where the nearest paramedic
+            can be twenty, forty, ninety minutes away.
+          </p>
+          <p class="problem-body">
+            <strong>The first responder is whoever is closest.</strong> A friend, a coach, a
+            stranger walking by. Whether that person knows how to manage a spinal injury,
+            stop arterial bleeding, or recognize a concussion is the difference between a
+            close call and a tragedy.
+          </p>
+          <p class="problem-body">
+            Action sports communities are tight, capable, and skill-rich. What is missing is
+            access to the medical training that turns capability into competence under
+            pressure. That is the gap we close.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAMS -->
+    <section class="programs" id="programs" aria-labelledby="programs-headline">
+      <div class="programs-inner">
+        <p class="section-eyebrow" aria-hidden="true">What we do</p>
+        <h2 class="section-headline programs-intro" id="programs-headline">
+          Two programs. Both put trained responders on the ground.
+        </h2>
+
+        <article class="program">
+          <div>
+            <p class="program-index">
+              <span class="program-index__num">01</span>
+              <span>Tuition grants</span>
+            </p>
+            <h3 class="program-title">We pay for the certification.</h3>
+          </div>
+          <div>
+            <p class="program-body">
+              Athletes, coaches, park staff, and event organizers apply for funding to cover
+              an approved medical training course. Our Grant Review Board scores
+              applications on community impact and financial need. Awards are paid directly
+              to the training provider, no reimbursement paperwork on the recipient.
+            </p>
+            <p class="program-body">
+              After the course, the recipient sends back a certificate and a short note on
+              how they plan to use it. That is the entire reporting requirement.
+            </p>
+            <p class="program-meta">
+              <span>EMT-Basic</span>
+              <span>Wilderness First Responder</span>
+              <span>Wilderness First Aid</span>
+              <span>CPR / AED</span>
+              <span>NOLS Wilderness Medicine</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="program">
+          <div>
+            <p class="program-index">
+              <span class="program-index__num">02</span>
+              <span>On-site training</span>
+            </p>
+            <h3 class="program-title">We bring the training to your community.</h3>
+          </div>
+          <div>
+            <p class="program-body">
+              At skate jams, climbing meets, bike park weekends, and surf contests, our team
+              runs hands-on safety clinics covering scene assessment, bleeding control,
+              spinal precaution, and what to do in the first ten minutes of a serious
+              injury. Sessions are short, repeat throughout the day, and built for people
+              who would rather be riding.
+            </p>
+            <p class="program-body">
+              Event organizers cover travel only. Curriculum, instructors, and supplies are
+              donor-funded. We work with shops, parks, and contest series; if there is a
+              gathering of fifty or more people, we can be there.
+            </p>
+            <p class="program-meta">
+              <span>Free for community events</span>
+              <span>30 to 90 minute sessions</span>
+              <span>Bilingual on request</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- BOARD -->
+    <section class="board" id="board" aria-labelledby="board-headline">
+      <div class="board-inner">
+        <div class="board-header">
+          <h2 class="section-headline" id="board-headline">
+            Built by people who know the sports and the medicine.
+          </h2>
+          <p class="section-sub section-sub--flush">
+            Our founding board pairs lifelong action sports practitioners with working
+            medical professionals. Every grant decision and every event runs through people
+            who have spent decades in both worlds.
+          </p>
+        </div>
+
+        <ul class="board-grid" role="list">
+          {board.map((member) => (
+            <li class="board-card">
+              <span class="board-monogram" aria-hidden="true">{member.initials}</span>
+              <p class="board-name">{member.name}</p>
+              <p class="board-role">{member.role}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- IMPACT — where your gift goes -->
+    <section class="impact" id="impact" aria-labelledby="impact-headline">
+      <div class="impact-inner">
+        <div>
+          <p class="impact-eyebrow" aria-hidden="true">How your gift moves</p>
+          <h2 class="impact-headline" id="impact-headline">
+            Every dollar lands on a tuition invoice or a training kit.
+          </h2>
+          <p class="impact-sub">
+            We are new. We do not have years of impact data yet. What we can tell you is
+            exactly where each gift goes the moment it clears, because every grant and every
+            clinic has a fixed unit cost we already know.
+          </p>
+        </div>
+
+        <div>
+          <ol class="impact-ladder" aria-label="Where your donation goes">
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$50</span>
+              <p class="impact-rung__body">
+                <strong>One CPR / AED certification.</strong>
+                Pays the full course fee for one community member, paid directly to the
+                training provider.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$150</span>
+              <p class="impact-rung__body">
+                <strong>One Wilderness First Aid course.</strong>
+                Two-day field training. Covers tuition, course materials, and reference
+                manual.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$500</span>
+              <p class="impact-rung__body">
+                <strong>One Wilderness First Responder course.</strong>
+                Eighty hours of instruction. The standard certification for working in
+                remote environments.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$1,200</span>
+              <p class="impact-rung__body">
+                <strong>One full EMT-Basic certification.</strong>
+                Tuition for the most rigorous tier we fund. Recipients leave employable as
+                ambulance crew.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$2,500</span>
+              <p class="impact-rung__body">
+                <strong>One on-site training day.</strong>
+                Instructors, supplies, and curriculum at a community event of your choice.
+                Reaches forty to a hundred attendees.
+              </p>
+            </li>
+          </ol>
+
+          <p class="impact-note">
+            We are an all-volunteer board. No salaries are paid from donations. Annual Form
+            990 will be public the year after our first full operating period.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECOND DONATE MOMENT -->
+    <section class="donate-cta" id="donate" aria-labelledby="donate-cta-headline">
+      <div class="donate-cta-inner">
+        <div>
+          <p class="donate-cta-eyebrow" aria-hidden="true">Get involved</p>
+          <h2 class="donate-cta-headline" id="donate-cta-headline">
+            One certification at a time, the community gets safer.
+          </h2>
+        </div>
+        <div class="donate-cta-actions">
+          <a href="/donate" class="btn btn-white">Donate now</a>
+          <a href="/apply" class="btn btn-outline">Apply for a grant</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

@@ -1,0 +1,147 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Donate — Action Sports Safety Project"
+  description="Support medical training in the action sports community. Every gift lands on a tuition invoice or a training kit."
+>
+  <Header />
+
+  <main id="main-content">
+    <section class="page-hero" aria-labelledby="donate-title">
+      <div class="page-hero-inner">
+        <div>
+          <p class="page-hero-eyebrow" aria-hidden="true">Donate</p>
+          <h1 class="page-hero-title" id="donate-title">
+            Every gift lands on a tuition invoice.
+          </h1>
+        </div>
+        <p class="page-hero-lede">
+          Donations fund medical certifications and on-site training clinics, paid
+          directly to the training providers. We are an all-volunteer board. No salaries
+          are paid from donations.
+        </p>
+      </div>
+    </section>
+
+    <section class="impact" aria-labelledby="impact-h">
+      <div class="impact-inner">
+        <div>
+          <p class="impact-eyebrow" aria-hidden="true">Where your gift goes</p>
+          <h2 class="impact-headline" id="impact-h">
+            Fixed unit costs. No mystery overhead.
+          </h2>
+          <p class="impact-sub">
+            Every grant and every clinic has a known dollar figure. Your donation moves to
+            the next available slot at that price.
+          </p>
+        </div>
+
+        <div>
+          <ol class="impact-ladder" aria-label="Where your donation goes">
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$50</span>
+              <p class="impact-rung__body">
+                <strong>One CPR / AED certification.</strong>
+                Pays the full course fee for one community member, paid directly to the
+                training provider.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$150</span>
+              <p class="impact-rung__body">
+                <strong>One Wilderness First Aid course.</strong>
+                Two-day field training. Covers tuition, course materials, and reference
+                manual.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$500</span>
+              <p class="impact-rung__body">
+                <strong>One Wilderness First Responder course.</strong>
+                Eighty hours of instruction. The standard certification for working in
+                remote environments.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$1,200</span>
+              <p class="impact-rung__body">
+                <strong>One full EMT-Basic certification.</strong>
+                Tuition for the most rigorous tier we fund. Recipients leave employable as
+                ambulance crew.
+              </p>
+            </li>
+            <li class="impact-rung">
+              <span class="impact-rung__amount">$2,500</span>
+              <p class="impact-rung__body">
+                <strong>One on-site training day.</strong>
+                Instructors, supplies, and curriculum at a community event of your choice.
+                Reaches forty to a hundred attendees.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section page-section--dust" aria-labelledby="give-h">
+      <div class="page-split">
+        <aside class="page-aside">
+          <p class="page-aside__heading">Three ways to give</p>
+          <ul class="page-aside__list">
+            <li><a href="#online">Online</a></li>
+            <li><a href="#check">By check</a></li>
+            <li><a href="#stock">Stock or DAF</a></li>
+            <li><a href="#match">Employer match</a></li>
+          </ul>
+        </aside>
+
+        <div class="prose">
+          <h2 id="give-h">How to give</h2>
+
+          <h3 id="online">Online</h3>
+          <p>
+            Online giving is launching soon. To be notified when secure card and ACH
+            donations open, write
+            <a href="mailto:donate@actionsportssafetyproject.com">donate@actionsportssafetyproject.com</a>.
+          </p>
+
+          <h3 id="check">By check</h3>
+          <p>
+            Make checks payable to <strong>Action Sports Safety Project</strong>. Mail to
+            the address listed on our
+            <a href="/contact">contact page</a>. We send a written acknowledgment for tax
+            purposes within ten business days of receipt.
+          </p>
+
+          <h3 id="stock">Stock or donor-advised fund</h3>
+          <p>
+            We accept appreciated securities and donor-advised fund grants. Contact
+            <a href="mailto:donate@actionsportssafetyproject.com">donate@actionsportssafetyproject.com</a>
+            for transfer instructions and our EIN.
+          </p>
+
+          <h3 id="match">Employer match</h3>
+          <p>
+            Many employers match charitable contributions. Once you donate, ask your
+            employer's giving program to direct the match to Action Sports Safety Project,
+            a 501(c)(3) public benefit corporation in California.
+          </p>
+
+          <hr />
+
+          <p style="font-size: var(--t-sm); color: var(--c-text-3);">
+            Donations are tax-deductible to the extent permitted by law. No goods or
+            services are provided in exchange for charitable contributions. Tax ID (EIN)
+            available upon request.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
