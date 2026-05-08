@@ -6,11 +6,23 @@ import PortableText from '../components/PortableText.astro';
 import { client } from '../lib/sanity';
 import { aboutPageQuery, boardMembersQuery } from '../lib/queries';
 
-const [page, board] = await Promise.all([
+interface BoardMember { name?: string; role?: string; initials?: string }
+interface PageHero { eyebrow?: string; title?: string; lede?: string }
+interface AboutPage {
+  hero?: PageHero;
+  missionBody?: any[];
+  originBody?: any[];
+  valuesBody?: any[];
+  governanceBody?: any[];
+  seo?: { title?: string; description?: string };
+}
+
+const [page, board] = (await Promise.all([
   client.fetch(aboutPageQuery),
   client.fetch(boardMembersQuery),
-]);
-const p = page || {};
+])) as [AboutPage | null, BoardMember[] | null];
+const p: AboutPage = page || {};
+const boardList: BoardMember[] = board || [];
 ---
 
 <Base title={p.seo?.title} description={p.seo?.description}>
@@ -52,7 +64,7 @@ const p = page || {};
 
           <h2 id="board">Board of directors</h2>
           <ul class="board-grid" role="list" style="list-style:none; margin:var(--s-6) 0; padding:0;">
-            {(board || []).map((member) => (
+            {boardList.map((member) => (
               <li class="board-card">
                 <span class="board-monogram" aria-hidden="true">{member.initials}</span>
                 <p class="board-name">{member.name}</p>

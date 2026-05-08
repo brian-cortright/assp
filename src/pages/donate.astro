@@ -6,7 +6,20 @@ import PortableText from '../components/PortableText.astro';
 import { client } from '../lib/sanity';
 import { donatePageQuery } from '../lib/queries';
 
-const page = (await client.fetch(donatePageQuery)) || {};
+interface PageHero { eyebrow?: string; title?: string; lede?: string }
+interface ImpactRung { amount?: string; title?: string; body?: string }
+interface DonatePage {
+  hero?: PageHero;
+  impactEyebrow?: string;
+  impactHeadline?: string;
+  impactSubheadline?: string;
+  impactRungs?: ImpactRung[];
+  howToGiveBody?: any[];
+  disclaimer?: string;
+  seo?: { title?: string; description?: string };
+}
+
+const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {};
 ---
 
 <Base title={page.seo?.title} description={page.seo?.description}>

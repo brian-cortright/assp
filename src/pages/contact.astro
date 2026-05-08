@@ -5,7 +5,17 @@ import Footer from '../components/Footer.astro';
 import { client } from '../lib/sanity';
 import { contactPageQuery } from '../lib/queries';
 
-const page = (await client.fetch(contactPageQuery)) || {};
+interface PageHero { eyebrow?: string; title?: string; lede?: string }
+interface ContactChannel { label?: string; value?: string; href?: string }
+interface FaqItem { question?: string; answer?: string }
+interface ContactPage {
+  hero?: PageHero;
+  channels?: ContactChannel[];
+  faq?: FaqItem[];
+  seo?: { title?: string; description?: string };
+}
+
+const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) || {};
 ---
 
 <Base title={page.seo?.title} description={page.seo?.description}>
