@@ -1,18 +1,50 @@
 ---
-// Fixed top navigation with terracotta background and a mobile drawer.
+import { client } from '../lib/sanity';
+import { siteSettingsQuery } from '../lib/queries';
+
+interface NavLink {
+  label: string;
+  href: string;
+  variant?: string;
+  external?: boolean;
+}
+
+interface SiteSettings {
+  siteName?: string;
+  tagline?: string;
+  navLinks?: NavLink[];
+}
+
+const settings: SiteSettings = (await client.fetch(siteSettingsQuery)) || {};
+const navLinks: NavLink[] = settings.navLinks?.length
+  ? settings.navLinks
+  : [
+      { label: 'About', href: '/about' },
+      { label: 'Programs', href: '/programs' },
+      { label: 'Grants', href: '/grants' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Donate', href: '/donate', variant: 'primary' },
+    ];
 ---
 
 <nav class="nav" id="site-nav" aria-label="Main navigation">
-  <a href="/" class="nav-logo" aria-label="Action Sports Safety Project, home">
-    <span class="nav-logo__name">Action Sports Safety Project</span>
-    <span class="nav-logo__tag" aria-hidden="true">501(c)(3) Public Benefit</span>
+  <a href="/" class="nav-logo" aria-label={`${settings.siteName ?? 'Action Sports Safety Project'}, home`}>
+    <span class="nav-logo__name">{settings.siteName ?? 'Action Sports Safety Project'}</span>
+    {settings.tagline && (
+      <span class="nav-logo__tag" aria-hidden="true">{settings.tagline}</span>
+    )}
   </a>
   <ul class="nav-links" role="list">
-    <li><a href="/about">About</a></li>
-    <li><a href="/programs">Programs</a></li>
-    <li><a href="/grants">Grants</a></li>
-    <li><a href="/contact">Contact</a></li>
-    <li><a href="/donate" class="nav-donate">Donate</a></li>
+    {navLinks.map((link) => (
+      <li>
+        <a
+          href={link.href}
+          class={link.variant === 'primary' ? 'nav-donate' : undefined}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >{link.label}</a>
+      </li>
+    ))}
   </ul>
   <button
     class="nav-burger"
@@ -26,11 +58,14 @@
 </nav>
 
 <nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation" aria-hidden="true">
-  <a href="/about" class="drawer-link">About</a>
-  <a href="/programs" class="drawer-link">Programs</a>
-  <a href="/grants" class="drawer-link">Grants</a>
-  <a href="/contact" class="drawer-link">Contact</a>
-  <a href="/donate" class="drawer-link drawer-donate">Donate</a>
+  {navLinks.map((link) => (
+    <a
+      href={link.href}
+      class={`drawer-link${link.variant === 'primary' ? ' drawer-donate' : ''}`}
+      target={link.external ? '_blank' : undefined}
+      rel={link.external ? 'noopener noreferrer' : undefined}
+    >{link.label}</a>
+  ))}
 </nav>
 
 <script>

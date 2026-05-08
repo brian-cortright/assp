@@ -2,36 +2,28 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PortableText from '../components/PortableText.astro';
+import { client } from '../lib/sanity';
+import { aboutPageQuery, boardMembersQuery } from '../lib/queries';
 
-const board = [
-  { name: 'Brian Cortright', role: 'Founder', initials: 'BC' },
-  { name: 'Amy Ginn', role: 'Board Director', initials: 'AG' },
-  { name: 'Alex George', role: 'Board Director', initials: 'AG' },
-  { name: 'Max Dubler', role: 'Board Director', initials: 'MD' },
-  { name: 'Terry Welliver', role: 'Board Director', initials: 'TW' },
-];
+const [page, board] = await Promise.all([
+  client.fetch(aboutPageQuery),
+  client.fetch(boardMembersQuery),
+]);
+const p = page || {};
 ---
 
-<Base
-  title="About — Action Sports Safety Project"
-  description="Why Action Sports Safety Project exists, what we believe, and the founding board behind the work."
->
+<Base title={p.seo?.title} description={p.seo?.description}>
   <Header />
 
   <main id="main-content">
     <section class="page-hero" aria-labelledby="about-title">
       <div class="page-hero-inner">
         <div>
-          <p class="page-hero-eyebrow" aria-hidden="true">About</p>
-          <h1 class="page-hero-title" id="about-title">
-            Built by the people the work serves.
-          </h1>
+          {p.hero?.eyebrow && <p class="page-hero-eyebrow" aria-hidden="true">{p.hero.eyebrow}</p>}
+          <h1 class="page-hero-title" id="about-title">{p.hero?.title}</h1>
         </div>
-        <p class="page-hero-lede">
-          Action Sports Safety Project is a 501(c)(3) public benefit corporation founded in
-          California in 2024. We exist for one reason: to make sure the person nearest a
-          serious injury knows what to do.
-        </p>
+        {p.hero?.lede && <p class="page-hero-lede">{p.hero.lede}</p>}
       </div>
     </section>
 
@@ -50,49 +42,17 @@ const board = [
 
         <div class="prose">
           <h2 id="mission">Our mission</h2>
-          <p>
-            We fund tuition grants for medical certifications and run on-site response
-            training at action sports community events. Every grant and every clinic
-            targets the same outcome: a trained first responder closer to the next
-            preventable tragedy.
-          </p>
+          <PortableText value={p.missionBody} />
 
           <h2 id="origin">Origin</h2>
-          <p>
-            The action sports community is full of people who would help if they knew how.
-            What is missing is access to the medical training that turns instinct into
-            competence. We started Action Sports Safety Project because the gap between
-            "wants to help" and "knows what to do" is the gap that costs lives.
-          </p>
-          <p>
-            We are based in California. Our founding board pairs lifelong skaters,
-            climbers, and riders with practicing medical professionals. We meet quarterly,
-            review grants monthly, and report annually.
-          </p>
+          <PortableText value={p.originBody} />
 
           <h2 id="values">What we believe</h2>
-          <ul>
-            <li>
-              <strong>The first responder is whoever is closest.</strong>
-              Training the bystander matters more than wishing for a paramedic.
-            </li>
-            <li>
-              <strong>Money should land on a tuition invoice, not on overhead.</strong>
-              Every dollar tracks to a fixed unit cost we already know.
-            </li>
-            <li>
-              <strong>Communities know their own gaps.</strong>
-              We pay for what people request, not what we assume they need.
-            </li>
-            <li>
-              <strong>Reporting should be light.</strong>
-              A certificate and a paragraph. That is the whole post-grant requirement.
-            </li>
-          </ul>
+          <PortableText value={p.valuesBody} />
 
           <h2 id="board">Board of directors</h2>
           <ul class="board-grid" role="list" style="list-style:none; margin:var(--s-6) 0; padding:0;">
-            {board.map((member) => (
+            {(board || []).map((member) => (
               <li class="board-card">
                 <span class="board-monogram" aria-hidden="true">{member.initials}</span>
                 <p class="board-name">{member.name}</p>
@@ -102,17 +62,7 @@ const board = [
           </ul>
 
           <h2 id="governance">Governance</h2>
-          <p>
-            Action Sports Safety Project is a California public benefit corporation
-            recognized as tax-exempt under section 501(c)(3) of the Internal Revenue Code.
-            Donations are tax-deductible to the extent permitted by law. Our annual Form
-            990 will be made public following the conclusion of our first full operating
-            year.
-          </p>
-          <p>
-            Our board serves without compensation. No officer, director, or family member
-            receives salary, contractor payments, or grants from the organization.
-          </p>
+          <PortableText value={p.governanceBody} />
         </div>
       </div>
     </section>

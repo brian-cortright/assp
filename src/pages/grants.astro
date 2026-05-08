@@ -2,28 +2,24 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PortableText from '../components/PortableText.astro';
+import { client } from '../lib/sanity';
+import { grantsPageQuery } from '../lib/queries';
+
+const page = (await client.fetch(grantsPageQuery)) || {};
 ---
 
-<Base
-  title="Grant Submissions — Action Sports Safety Project"
-  description="How to apply for a tuition grant covering an approved medical certification course."
->
+<Base title={page.seo?.title} description={page.seo?.description}>
   <Header />
 
   <main id="main-content">
     <section class="page-hero" aria-labelledby="grants-title">
       <div class="page-hero-inner">
         <div>
-          <p class="page-hero-eyebrow" aria-hidden="true">Grant submissions</p>
-          <h1 class="page-hero-title" id="grants-title">
-            Apply for a tuition grant.
-          </h1>
+          {page.hero?.eyebrow && <p class="page-hero-eyebrow" aria-hidden="true">{page.hero.eyebrow}</p>}
+          <h1 class="page-hero-title" id="grants-title">{page.hero?.title}</h1>
         </div>
-        <p class="page-hero-lede">
-          We pay the full tuition for approved medical certification courses, directly to
-          the training provider. Athletes, coaches, park staff, and event organizers in
-          the action sports community are eligible.
-        </p>
+        {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
       </div>
     </section>
 
@@ -41,79 +37,7 @@ import Footer from '../components/Footer.astro';
         </aside>
 
         <div class="prose">
-          <h2 id="eligibility">Eligibility</h2>
-          <p>You are eligible if you can answer yes to all three:</p>
-          <ul>
-            <li>
-              You are part of the action sports community as a participant, coach, park
-              or shop staff member, event organizer, or guide.
-            </li>
-            <li>
-              You will use the certification in a community setting (events, parks, shops,
-              guiding, coaching, peer response).
-            </li>
-            <li>
-              The course you are applying for is on our approved list, or you have written
-              approval from us in advance.
-            </li>
-          </ul>
-
-          <h2 id="courses">Approved courses</h2>
-          <ul>
-            <li>CPR / AED (American Red Cross or American Heart Association)</li>
-            <li>Wilderness First Aid (NOLS, SOLO, WMA, or equivalent)</li>
-            <li>Wilderness First Responder (NOLS, SOLO, WMA, or equivalent)</li>
-            <li>EMT-Basic (state-approved program)</li>
-            <li>Wilderness EMT</li>
-            <li>Stop the Bleed</li>
-          </ul>
-          <p>
-            Have a course in mind that is not on this list? Email
-            <a href="mailto:grants@actionsportssafetyproject.com">grants@actionsportssafetyproject.com</a>
-            with details before applying.
-          </p>
-
-          <h2 id="process">Process</h2>
-          <ol>
-            <li>Submit an application using the form below.</li>
-            <li>
-              Our Grant Review Board scores applications on community impact and financial
-              need. We award based on score, not on submission order.
-            </li>
-            <li>
-              If approved, we pay tuition directly to the training provider on your behalf.
-              You register normally and attend the course.
-            </li>
-            <li>
-              After completion, send us a copy of your certificate and a short note (a few
-              sentences) on how you plan to use it.
-            </li>
-          </ol>
-
-          <h2 id="timeline">Timeline</h2>
-          <p>
-            Applications are reviewed monthly. Decisions are sent within 30 days of the
-            review meeting. Funded courses must be completed within 12 months of the
-            award date.
-          </p>
-
-          <h2 id="apply">Apply</h2>
-          <p>
-            The online application is launching alongside our first review cycle. Until
-            then, please email
-            <a href="mailto:grants@actionsportssafetyproject.com">grants@actionsportssafetyproject.com</a>
-            with the following:
-          </p>
-          <ul>
-            <li>Your name, location, and the action sports community you are part of</li>
-            <li>The course you want to take, the provider, and the cost</li>
-            <li>How you plan to use the certification once you complete it</li>
-            <li>A short note on financial need (we keep this confidential)</li>
-          </ul>
-          <p>
-            We respond to every email within five business days, even if our reply is
-            "we need more information."
-          </p>
+          <PortableText value={page.body} />
         </div>
       </div>
     </section>

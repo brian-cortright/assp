@@ -1,27 +1,45 @@
 ---
-// Site footer — dark surface with brand, site nav, and legal links.
+import { client } from '../lib/sanity';
+import { siteSettingsQuery } from '../lib/queries';
+
+interface SiteSettings {
+  siteName?: string;
+  footerDescription?: string;
+  taxStatus?: string;
+  state?: string;
+  taxId?: string;
+  contactEmail?: string;
+  foundingYear?: number;
+}
+
+const settings: SiteSettings = (await client.fetch(siteSettingsQuery)) || {};
+const year = new Date().getFullYear();
+const foundingYear = settings.foundingYear ?? 2024;
+const copyrightYear = year > foundingYear ? `${foundingYear}–${year}` : `${foundingYear}`;
+const email = settings.contactEmail ?? 'info@actionsportssafetyproject.com';
+const siteName = settings.siteName ?? 'Action Sports Safety Project';
 ---
 
 <footer class="footer" aria-label="Site footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <p class="footer-brand__name">Action Sports Safety Project</p>
+      <p class="footer-brand__name">{siteName}</p>
       <p class="footer-brand__desc">
-        Life-saving education for the action sports community. Tuition grants for medical
-        certifications. Emergency response training at community events.
+        {settings.footerDescription ??
+          'Life-saving education for the action sports community. Tuition grants for medical certifications. Emergency response training at community events.'}
       </p>
       <dl class="footer-trust">
         <div class="footer-trust__item">
           <dt style="display:inline;">Organization:</dt>
-          <dd style="display:inline;"> 501(c)(3) Public Benefit Corporation</dd>
+          <dd style="display:inline;"> {settings.taxStatus ?? '501(c)(3) Public Benefit Corporation'}</dd>
         </div>
         <div class="footer-trust__item">
           <dt style="display:inline;">State:</dt>
-          <dd style="display:inline;"> California</dd>
+          <dd style="display:inline;"> {settings.state ?? 'California'}</dd>
         </div>
         <div class="footer-trust__item">
           <dt style="display:inline;">Tax ID (EIN):</dt>
-          <dd style="display:inline;"> Available upon request</dd>
+          <dd style="display:inline;"> {settings.taxId ?? 'Available upon request'}</dd>
         </div>
       </dl>
     </div>
@@ -44,13 +62,13 @@
         <a href="/terms">Terms of Use</a>
         <a href="/privacy">Privacy Policy</a>
         <a href="/disclosures">State Disclosures</a>
-        <a href="mailto:info@actionsportssafetyproject.com">info@actionsportssafetyproject.com</a>
+        <a href={`mailto:${email}`}>{email}</a>
       </nav>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p class="footer-copy">&copy; 2024 Action Sports Safety Project. All rights reserved.</p>
+    <p class="footer-copy">&copy; {copyrightYear} {siteName}. All rights reserved.</p>
     <p class="footer-legal">
       Donations are tax-deductible to the extent permitted by law. No goods or services are
       provided in exchange for charitable contributions.

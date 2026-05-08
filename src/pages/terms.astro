@@ -2,110 +2,37 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PortableText from '../components/PortableText.astro';
+import { client } from '../lib/sanity';
+import { legalPageQuery } from '../lib/queries';
+
+const page = (await client.fetch(legalPageQuery, { slug: 'terms' })) || {};
 ---
 
-<Base
-  title="Terms of Use — Action Sports Safety Project"
-  description="Terms governing use of the Action Sports Safety Project website."
->
+<Base title={page.seo?.title} description={page.seo?.description}>
   <Header />
 
   <main id="main-content">
     <section class="page-hero" aria-labelledby="terms-title">
       <div class="page-hero-inner">
         <div>
-          <p class="page-hero-eyebrow" aria-hidden="true">Legal</p>
-          <h1 class="page-hero-title" id="terms-title">Terms of Use</h1>
+          {page.hero?.eyebrow && <p class="page-hero-eyebrow" aria-hidden="true">{page.hero.eyebrow}</p>}
+          <h1 class="page-hero-title" id="terms-title">{page.hero?.title || page.title}</h1>
         </div>
-        <p class="page-hero-lede">
-          Plain-language terms governing use of this website. These terms are a working
-          draft pending review by counsel; the live version may change.
-        </p>
+        {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
       </div>
     </section>
 
     <section class="page-section">
       <div class="page-section-inner">
-        <p class="prose-meta">
-          <span>Effective date: To be set</span>
-          <span>Last updated: Draft</span>
-        </p>
-
+        {(page.effectiveDate || page.lastUpdated) && (
+          <p class="prose-meta">
+            {page.effectiveDate && <span>Effective date: {page.effectiveDate}</span>}
+            {page.lastUpdated && <span>Last updated: {page.lastUpdated}</span>}
+          </p>
+        )}
         <div class="prose">
-          <h2>1. Acceptance</h2>
-          <p>
-            By accessing this website, you agree to these terms. If you do not agree,
-            please do not use the site.
-          </p>
-
-          <h2>2. Who we are</h2>
-          <p>
-            Action Sports Safety Project is a California public benefit corporation
-            recognized as tax-exempt under section 501(c)(3) of the Internal Revenue Code.
-            Donations are tax-deductible to the extent permitted by law.
-          </p>
-
-          <h2>3. Use of the site</h2>
-          <p>
-            You may browse, share, and reference content from this site for non-commercial
-            purposes. You may not attempt to disrupt the site, scrape it for commercial
-            use, or impersonate the organization.
-          </p>
-
-          <h2>4. Donations and grants</h2>
-          <p>
-            Donations are processed through third-party providers we will name once
-            online giving launches. Grants are awarded at the discretion of our Grant
-            Review Board based on the criteria described on the
-            <a href="/grants">Grant Submissions</a> page. No application is guaranteed
-            funding.
-          </p>
-
-          <h2>5. Medical disclaimer</h2>
-          <p>
-            We fund medical training. We are not a medical provider. Information on this
-            site is general and educational. It is not medical advice. In an emergency,
-            call your local emergency number.
-          </p>
-
-          <h2>6. Third-party links</h2>
-          <p>
-            We link to training providers, courses, and other organizations. We do not
-            control those sites and are not responsible for their content or practices.
-          </p>
-
-          <h2>7. Intellectual property</h2>
-          <p>
-            The Action Sports Safety Project name, logo, and original content on this site
-            are owned by Action Sports Safety Project. Trademarks and content from third
-            parties belong to their respective owners.
-          </p>
-
-          <h2>8. Disclaimer of warranties</h2>
-          <p>
-            The site is provided "as is." We do our best to keep it accurate and
-            available, but we make no warranties about uptime, accuracy, or fitness for
-            any particular purpose.
-          </p>
-
-          <h2>9. Limitation of liability</h2>
-          <p>
-            To the maximum extent permitted by law, Action Sports Safety Project, its
-            directors, officers, and volunteers are not liable for any indirect,
-            incidental, or consequential damages arising from use of the site.
-          </p>
-
-          <h2>10. Changes</h2>
-          <p>
-            We may update these terms. Material changes will be reflected in the effective
-            date above.
-          </p>
-
-          <h2>11. Contact</h2>
-          <p>
-            Questions about these terms:
-            <a href="mailto:info@actionsportssafetyproject.com">info@actionsportssafetyproject.com</a>.
-          </p>
+          <PortableText value={page.body} />
         </div>
       </div>
     </section>
