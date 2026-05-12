@@ -1,8 +1,24 @@
-import { createClient } from '@sanity/client';
+import { createClient } from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
 
 export const client = createClient({
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || '',
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
+  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || "",
+  dataset: import.meta.env.PUBLIC_SANITY_DATASET || "production",
   useCdn: true,
-  apiVersion: '2025-05-01',
+  apiVersion: "2025-05-01",
 });
+
+const builder = imageUrlBuilder(client);
+
+/**
+ * Build a Sanity image URL. Always pass through the builder so hotspot/crop
+ * are respected. Returns null when no source is provided so the caller can
+ * collapse the slot (no broken-image rendering).
+ */
+export function urlFor(source: unknown) {
+  if (!source) return null;
+  return builder
+    .image(source as any)
+    .auto("format")
+    .fit("max");
+}

@@ -1,6 +1,10 @@
 /**
  * GROQ queries for fetching content from Sanity CMS.
  * Used in Astro pages at build time.
+ *
+ * Editorial images project only `asset` (hotspot/crop reference) and `alt`.
+ * Admin metadata (photographer, location, captureDate, consentOnFile) is
+ * intentionally never fetched into page render code — Sanity-only.
  */
 
 // ── Site Settings ──────────────────────────────
@@ -65,7 +69,7 @@ export const homePageQuery = `*[_type == "homePage"][0] {
 
 // ── About Page ─────────────────────────────────
 export const aboutPageQuery = `*[_type == "aboutPage"][0] {
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   missionBody,
   originBody,
   valuesBody,
@@ -75,9 +79,10 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
 
 // ── Programs Page ──────────────────────────────
 export const programsPageQuery = `*[_type == "programsPage"][0] {
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   programs[] {
     number, label, title, bodyParagraphs, metaTags,
+    image { asset, alt },
     cta { label, href, variant, external }
   },
   donateCTAEyebrow,
@@ -88,7 +93,7 @@ export const programsPageQuery = `*[_type == "programsPage"][0] {
 
 // ── Grants Page ────────────────────────────────
 export const grantsPageQuery = `*[_type == "grantsPage"][0] {
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   body,
   "approvedCourses": approvedCourses[]->{ code, name, description, order } | order(order asc),
   seo { title, description }
@@ -96,11 +101,11 @@ export const grantsPageQuery = `*[_type == "grantsPage"][0] {
 
 // ── Donate Page ────────────────────────────────
 export const donatePageQuery = `*[_type == "donatePage"][0] {
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   impactEyebrow,
   impactHeadline,
   impactSubheadline,
-  impactRungs[] { amount, title, body },
+  impactRungs[] { amount, title, body, image { asset, alt } },
   howToGiveBody,
   disclaimer,
   seo { title, description }
@@ -108,7 +113,7 @@ export const donatePageQuery = `*[_type == "donatePage"][0] {
 
 // ── Contact Page ───────────────────────────────
 export const contactPageQuery = `*[_type == "contactPage"][0] {
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   channels[] { label, value, href },
   faq[] { question, answer },
   seo { title, description }
@@ -117,7 +122,7 @@ export const contactPageQuery = `*[_type == "contactPage"][0] {
 // ── Legal Pages ────────────────────────────────
 export const legalPageQuery = `*[_type == "legalPage" && slug.current == $slug][0] {
   title,
-  hero { eyebrow, title, lede },
+  hero { eyebrow, title, lede, image { asset, alt } },
   effectiveDate,
   lastUpdated,
   body,

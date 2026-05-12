@@ -443,6 +443,25 @@ ul {
   position: relative;
   overflow: hidden;
 }
+
+/* Hero interstitial — full-bleed 3:2 landscape band immediately below the
+   Pine hero. Hidden when there's no image (the figure simply isn't rendered).
+   The Stone-line hairline frame discipline is shared with all editorial
+   photo slots; here the border is omitted because the photo IS the slab. */
+.hero-interstitial {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: var(--pine);
+  overflow: hidden;
+  border-bottom: 1px solid var(--c-border);
+}
+.hero-interstitial img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .hero-inner {
   flex: 1;
   display: flex;
@@ -1299,6 +1318,46 @@ ul {
 .program:last-child {
   border-bottom: 1px solid var(--sand-line);
 }
+
+/* With photo: three-column magazine layout. head | text | photo (square).
+   Alternate rows flip to photo | head | text via .program--photo-left. */
+.program--with-photo {
+  grid-template-columns: 4fr 4fr 4fr;
+  gap: var(--s-10);
+  align-items: start;
+}
+.program--with-photo .program-head {
+  grid-column: 1;
+}
+.program--with-photo .program-text {
+  grid-column: 2;
+}
+.program--with-photo .program-photo {
+  grid-column: 3;
+}
+.program--with-photo.program--photo-left .program-photo {
+  grid-column: 1;
+}
+.program--with-photo.program--photo-left .program-head {
+  grid-column: 2;
+}
+.program--with-photo.program--photo-left .program-text {
+  grid-column: 3;
+}
+
+.program-photo {
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--stone-line);
+  background: var(--sand);
+  overflow: hidden;
+}
+.program-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .program-index {
   font-family: var(--f-mono);
   font-size: var(--t-xs);
@@ -1491,6 +1550,23 @@ ul {
 }
 .impact-rung:first-child {
   border-top: 1px solid var(--stone-line);
+}
+.impact-rung--with-photo {
+  grid-template-columns: 96px 1fr minmax(140px, 30%);
+  align-items: start;
+}
+.impact-rung__photo {
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  border: 1px solid oklch(40% 0.018 60);
+  background: var(--bark);
+  overflow: hidden;
+}
+.impact-rung__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .impact-rung__amount {
   font-family: var(--f-display);
@@ -1734,6 +1810,37 @@ ul {
   .footer-brand {
     grid-column: 1 / -1;
   }
+  /* Tablet: program photo collapses to 2 rows. head+text stacked left,
+     photo right (or reversed for alternation). */
+  .program--with-photo {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-8);
+  }
+  .program--with-photo .program-head {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .program--with-photo .program-text {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .program--with-photo .program-photo {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+  .program--with-photo.program--photo-left .program-head {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .program--with-photo.program--photo-left .program-text {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .program--with-photo.program--photo-left .program-photo {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1796,6 +1903,27 @@ ul {
     grid-template-columns: 1fr;
     gap: var(--s-6);
     padding: var(--s-12) 0;
+  }
+  /* Mobile: photo column collapses; alternation flag is irrelevant. */
+  .program--with-photo,
+  .program--with-photo.program--photo-left {
+    grid-template-columns: 1fr;
+  }
+  .program--with-photo .program-head,
+  .program--with-photo .program-text,
+  .program--with-photo .program-photo,
+  .program--with-photo.program--photo-left .program-head,
+  .program--with-photo.program--photo-left .program-text,
+  .program--with-photo.program--photo-left .program-photo {
+    grid-column: 1;
+  }
+  .impact-rung--with-photo {
+    grid-template-columns: 96px 1fr;
+  }
+  .impact-rung__photo {
+    grid-column: 1 / -1;
+    max-width: 240px;
+    margin-top: var(--s-3);
   }
   .board-row {
     grid-template-columns: auto 1fr;

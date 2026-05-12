@@ -3,16 +3,18 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Topography from '../components/Topography.astro';
-import { client } from '../lib/sanity';
+import { client, urlFor } from '../lib/sanity';
 import { homePageQuery, boardMembersQuery } from '../lib/queries';
 
 interface Cta { label: string; href: string; variant?: string; external?: boolean }
-interface Program { number?: string; label?: string; title?: string; bodyParagraphs?: string[]; metaTags?: string[]; cta?: Cta }
-interface ImpactRung { amount?: string; title?: string; body?: string }
+interface EditorialImage { asset?: unknown; alt?: string }
+interface Program { number?: string; label?: string; title?: string; bodyParagraphs?: string[]; metaTags?: string[]; image?: EditorialImage; cta?: Cta }
+interface ImpactRung { amount?: string; title?: string; body?: string; image?: EditorialImage }
 interface BoardMember { name?: string; role?: string; initials?: string }
 interface HomePage {
   heroEyebrow?: string; heroHeadline?: string; heroSubheadline?: string;
   heroPrimaryCta?: Cta; heroSecondaryCta?: Cta;
+  heroImage?: EditorialImage;
   problemHeadline?: string; problemBodyParagraphs?: string[];
   programsSectionEyebrow?: string; programsSectionHeadline?: string; programs?: Program[];
   boardHeadline?: string; boardSubheadline?: string;
@@ -60,6 +62,22 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
       </div>
     </section>
 
+    <!-- HERO INTERSTITIAL — full-bleed 3:2 landscape photo. Hidden when no image. -->
+    {h.heroImage?.asset && (
+      <figure class="hero-interstitial">
+        <img
+          src={urlFor(h.heroImage)!.width(2000).fit('crop').url()}
+          srcset={`${urlFor(h.heroImage)!.width(900).fit('crop').url()} 900w, ${urlFor(h.heroImage)!.width(1400).fit('crop').url()} 1400w, ${urlFor(h.heroImage)!.width(2000).fit('crop').url()} 2000w`}
+          sizes="100vw"
+          alt={h.heroImage.alt ?? ''}
+          loading="eager"
+          decoding="async"
+          width="2000"
+          height="1333"
+        />
+      </figure>
+    )}
+
     <!-- PROBLEM -->
     {h.problemHeadline && (
       <section class="problem" id="problem" aria-labelledby="problem-headline">
@@ -81,16 +99,16 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
           {h.programsSectionEyebrow && <p class="section-eyebrow" aria-hidden="true">{h.programsSectionEyebrow}</p>}
           <h2 class="section-headline programs-intro" id="programs-headline">{h.programsSectionHeadline}</h2>
 
-          {h.programs.map((prog) => (
-            <article class="program">
-              <div>
+          {h.programs.map((prog, i) => (
+            <article class={`program${prog.image?.asset ? ' program--with-photo' : ''}${i % 2 === 1 ? ' program--photo-left' : ''}`}>
+              <div class="program-head">
                 <p class="program-index">
                   {prog.number && <span class="program-index__num">{prog.number}</span>}
                   {prog.label && <span>{prog.label}</span>}
                 </p>
                 <h3 class="program-title">{prog.title}</h3>
               </div>
-              <div>
+              <div class="program-text">
                 {(prog.bodyParagraphs || []).map((para) => (
                   <p class="program-body">{para}</p>
                 ))}
@@ -100,6 +118,20 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
                   </p>
                 )}
               </div>
+              {prog.image?.asset && (
+                <figure class="program-photo">
+                  <img
+                    src={urlFor(prog.image)!.width(900).height(900).fit('crop').url()}
+                    srcset={`${urlFor(prog.image)!.width(600).height(600).fit('crop').url()} 600w, ${urlFor(prog.image)!.width(900).height(900).fit('crop').url()} 900w, ${urlFor(prog.image)!.width(1200).height(1200).fit('crop').url()} 1200w`}
+                    sizes="(min-width: 1024px) 30vw, 100vw"
+                    alt={prog.image.alt ?? ''}
+                    loading="lazy"
+                    decoding="async"
+                    width="900"
+                    height="900"
+                  />
+                </figure>
+              )}
             </article>
           ))}
         </div>
@@ -143,12 +175,26 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
           <div>
             <ol class="impact-ladder" aria-label="Where your donation goes">
               {h.impactRungs.map((rung) => (
-                <li class="impact-rung">
+                <li class={`impact-rung${rung.image?.asset ? ' impact-rung--with-photo' : ''}`}>
                   <span class="impact-rung__amount">{rung.amount}</span>
                   <p class="impact-rung__body">
                     <strong>{rung.title}</strong>
                     {rung.body && <> {rung.body}</>}
                   </p>
+                  {rung.image?.asset && (
+                    <figure class="impact-rung__photo">
+                      <img
+                        src={urlFor(rung.image)!.width(700).height(700).fit('crop').url()}
+                        srcset={`${urlFor(rung.image)!.width(500).height(500).fit('crop').url()} 500w, ${urlFor(rung.image)!.width(700).height(700).fit('crop').url()} 700w`}
+                        sizes="(min-width: 1024px) 30vw, 100vw"
+                        alt={rung.image.alt ?? ''}
+                        loading="lazy"
+                        decoding="async"
+                        width="700"
+                        height="700"
+                      />
+                    </figure>
+                  )}
                 </li>
               ))}
             </ol>
