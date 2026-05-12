@@ -51,15 +51,19 @@ const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) ||
 
         {page.faq && page.faq.length > 0 && (
           <>
-            <hr style="margin: var(--s-12) 0; border: 0; border-top: 1px solid var(--c-border);" />
+            <hr class="contact-divider" />
             <div class="prose prose-narrow">
               <h2>Frequently asked</h2>
-              {page.faq.map((item) => (
-                <>
-                  <h3>{item.question}</h3>
-                  <p>{item.answer}</p>
-                </>
-              ))}
+              <ul class="faq-list" role="list">
+                {page.faq.map((item) => (
+                  <li class="faq-item">
+                    <details>
+                      <summary>{item.question}</summary>
+                      <p>{item.answer}</p>
+                    </details>
+                  </li>
+                ))}
+              </ul>
             </div>
           </>
         )}

@@ -4,20 +4,18 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Topography from '../components/Topography.astro';
 import { client, urlFor } from '../lib/sanity';
-import { homePageQuery, boardMembersQuery } from '../lib/queries';
+import { homePageQuery } from '../lib/queries';
 
 interface Cta { label: string; href: string; variant?: string; external?: boolean }
 interface EditorialImage { asset?: unknown; alt?: string }
 interface Program { number?: string; label?: string; title?: string; bodyParagraphs?: string[]; metaTags?: string[]; image?: EditorialImage; cta?: Cta }
 interface ImpactRung { amount?: string; title?: string; body?: string; image?: EditorialImage }
-interface BoardMember { name?: string; role?: string; initials?: string }
 interface HomePage {
   heroEyebrow?: string; heroHeadline?: string; heroSubheadline?: string;
   heroPrimaryCta?: Cta; heroSecondaryCta?: Cta;
   heroImage?: EditorialImage;
   problemHeadline?: string; problemBodyParagraphs?: string[];
   programsSectionEyebrow?: string; programsSectionHeadline?: string; programs?: Program[];
-  boardHeadline?: string; boardSubheadline?: string;
   impactEyebrow?: string; impactHeadline?: string; impactSubheadline?: string;
   impactRungs?: ImpactRung[]; impactNote?: string;
   donateCTAEyebrow?: string; donateCTAHeadline?: string;
@@ -25,11 +23,7 @@ interface HomePage {
   seo?: { title?: string; description?: string };
 }
 
-const [home, board] = await Promise.all([
-  client.fetch<HomePage>(homePageQuery),
-  client.fetch<BoardMember[]>(boardMembersQuery),
-]) as [HomePage | null, BoardMember[]];
-
+const home = await client.fetch<HomePage>(homePageQuery);
 const h = home || {};
 const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
   c?.variant ? `btn btn-${c.variant}` : `btn ${fallback}`;
@@ -62,7 +56,6 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
         <ol class="hero-toc__list" role="list">
           <li><a href="#problem">Problem</a></li>
           <li><a href="#programs">Programs</a></li>
-          <li><a href="#board">Board</a></li>
           <li><a href="#impact">Impact</a></li>
           <li><a href="#donate">Donate</a></li>
         </ol>
@@ -143,30 +136,6 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
               )}
             </article>
           ))}
-        </div>
-      </section>
-    )}
-
-    <!-- BOARD -->
-    {board && board.length > 0 && (
-      <section class="board" id="board" aria-labelledby="board-headline">
-        <div class="board-inner">
-          <div class="board-intro">
-            <h2 class="section-headline" id="board-headline">{h.boardHeadline}</h2>
-            {h.boardSubheadline && (
-              <p class="section-sub section-sub--flush">{h.boardSubheadline}</p>
-            )}
-          </div>
-
-          <ol class="board-roster" role="list">
-            {board.map((member, i) => (
-              <li class="board-row">
-                <span class="board-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <p class="board-name">{member.name}</p>
-                <p class="board-role">{member.role}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
     )}

@@ -1,0 +1,85 @@
+---
+/**
+ * Shared layout for legal pages (privacy, terms, disclosures). Uses a
+ * quieter Chalk masthead instead of the Pine .page-hero slab so funder-
+ * facing reference material reads as a document, not a marketing page.
+ *
+ * Builds a sidebar TOC from the prose's h2 blocks (slugified to match
+ * PortableText.astro's id rule) so jumps are guaranteed to resolve.
+ */
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PortableText from '../components/PortableText.astro';
+import { buildToc } from '../lib/toc';
+
+interface Props {
+  page: {
+    title?: string;
+    hero?: { eyebrow?: string; title?: string; lede?: string };
+    effectiveDate?: string;
+    lastUpdated?: string;
+    body?: any[];
+    seo?: { title?: string; description?: string };
+  };
+  /** Used for the labelledby on the masthead. */
+  id: string;
+}
+
+const { page, id } = Astro.props;
+const toc = buildToc(page.body, 'h2');
+const title = page.hero?.title || page.title || '';
+---
+
+<Base title={page.seo?.title} description={page.seo?.description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="legal-mast" aria-labelledby={`${id}-title`}>
+      <div class="legal-mast__inner">
+        {page.hero?.eyebrow && <p class="legal-mast__eyebrow" aria-hidden="true">{page.hero.eyebrow}</p>}
+        <h1 class="legal-mast__title" id={`${id}-title`}>{title}</h1>
+        {page.hero?.lede && <p class="legal-mast__lede">{page.hero.lede}</p>}
+        {(page.effectiveDate || page.lastUpdated) && (
+          <dl class="legal-mast__meta">
+            {page.effectiveDate && (
+              <div>
+                <dt>Effective</dt>
+                <dd>{page.effectiveDate}</dd>
+              </div>
+            )}
+            {page.lastUpdated && (
+              <div>
+                <dt>Updated</dt>
+                <dd>{page.lastUpdated}</dd>
+              </div>
+            )}
+          </dl>
+        )}
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="page-split">
+        <aside class="page-aside" aria-label="On this page">
+          <p class="page-aside__heading">Sections</p>
+          {toc.length > 0 ? (
+            <ul class="page-aside__list">
+              {toc.map((entry) => (
+                <li><a href={`#${entry.id}`}>{entry.text}</a></li>
+              ))}
+            </ul>
+          ) : (
+            <p class="page-aside__empty">No sections.</p>
+          )}
+        </aside>
+
+        <div class="prose">
+          <PortableText value={page.body} />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

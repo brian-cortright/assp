@@ -1,0 +1,136 @@
+---
+/**
+ * Placeholder donate form. The processor (Stripe / Donorbox / etc.) is not
+ * yet stood up; this component captures the donor's intent (amount + email)
+ * and shows a tasteful "we're not live yet" inline notice on submit. Swap
+ * the action handler in the inline <script> when the processor is ready.
+ *
+ * Visual contract (DESIGN.md):
+ *   - Sand surface on Chalk page (no card-on-page).
+ *   - Stone-Line 1px borders, 3px radius, mono labels above fields.
+ *   - One Clay primary CTA. Counts as ONE Clay surface on the page.
+ */
+
+interface Props {
+  /** Section heading (e.g. "Give now" or "Apply for support"). */
+  heading?: string;
+  /** Mono kicker above the heading. */
+  eyebrow?: string;
+  /** Short prose under the heading. */
+  lede?: string;
+  /** Submit button label. */
+  submitLabel?: string;
+  /** Anchor id (used by sidebar TOCs and skip-links). */
+  id?: string;
+}
+
+const {
+  heading = 'Give now',
+  eyebrow = 'Donate',
+  lede = "Pick an amount, leave your email, and we'll be in touch as soon as our online processor is live. Until then, see the three offline ways to give below.",
+  submitLabel = 'Reserve my gift',
+  id = 'give',
+} = Astro.props;
+---
+
+<section class="give-form" id={id} aria-labelledby={`${id}-h`}>
+  <div class="give-form__inner">
+    <header class="give-form__head">
+      <p class="give-form__eyebrow" aria-hidden="true">{eyebrow}</p>
+      <h2 class="give-form__heading" id={`${id}-h`}>{heading}</h2>
+      <p class="give-form__lede">{lede}</p>
+    </header>
+
+    <form class="give-form__form" data-give-form novalidate>
+      <fieldset class="give-form__field give-form__field--tiers">
+        <legend class="give-form__label">Amount</legend>
+        <div class="give-form__tiers" role="radiogroup" aria-label="Donation amount">
+          {[25, 50, 100, 250, 500].map((amount, i) => (
+            <label class="give-form__tier">
+              <input
+                type="radio"
+                name="amount"
+                value={String(amount)}
+                checked={i === 1}
+              />
+              <span>${amount}</span>
+            </label>
+          ))}
+          <label class="give-form__tier give-form__tier--custom">
+            <input type="radio" name="amount" value="custom" />
+            <span>Other</span>
+          </label>
+        </div>
+        <label class="give-form__field give-form__field--inline" data-custom-field hidden>
+          <span class="give-form__label">Custom amount (USD)</span>
+          <input type="number" name="customAmount" min="1" step="1" inputmode="numeric" />
+        </label>
+      </fieldset>
+
+      <div class="give-form__row">
+        <label class="give-form__field">
+          <span class="give-form__label">Name</span>
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label class="give-form__field">
+          <span class="give-form__label">Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+      </div>
+
+      <label class="give-form__field">
+        <span class="give-form__label">Note <span class="give-form__optional">(optional)</span></span>
+        <textarea name="note" rows="3"></textarea>
+      </label>
+
+      <div class="give-form__actions">
+        <button type="submit" class="btn btn-primary">{submitLabel}</button>
+        <p class="give-form__fineprint">
+          Tax-deductible to the extent permitted by law. EIN furnished on request.
+        </p>
+      </div>
+
+      <div class="give-form__notice" data-give-notice hidden role="status" aria-live="polite">
+        <p>
+          <strong>Thanks, we've got you down for the amount above.</strong>
+          Our online processor isn't live yet. We'll email instructions for
+          check, stock, or DAF the moment it ships.
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-give-form]').forEach((formEl) => {
+    const form = formEl as HTMLFormElement;
+    const customField = form.querySelector<HTMLElement>('[data-custom-field]');
+    const notice = form.querySelector<HTMLElement>('[data-give-notice]');
+
+    form.querySelectorAll<HTMLInputElement>('input[name="amount"]').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        if (!customField) return;
+        const isCustom = (form.elements.namedItem('amount') as RadioNodeList | null)?.value === 'custom';
+        customField.hidden = !isCustom;
+        if (isCustom) {
+          customField.querySelector<HTMLInputElement>('input')?.focus();
+        }
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (notice) notice.hidden = false;
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>(
+        'input, textarea, button'
+      ).forEach((el) => {
+        el.disabled = true;
+      });
+      notice?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+</script>

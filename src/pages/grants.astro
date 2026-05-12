@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PortableText from '../components/PortableText.astro';
+import GrantForm from '../components/GrantForm.astro';
 import { client } from '../lib/sanity';
 import { grantsPageQuery } from '../lib/queries';
 
@@ -19,7 +20,12 @@ const page = (await client.fetch(grantsPageQuery)) || {};
           {page.hero?.eyebrow && <p class="page-hero-eyebrow" aria-hidden="true">{page.hero.eyebrow}</p>}
           <h1 class="page-hero-title" id="grants-title">{page.hero?.title}</h1>
         </div>
-        {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
+        <div>
+          {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
+          <p class="page-hero-actions">
+            <a href="#apply" class="btn btn-white">Start an application</a>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -29,7 +35,7 @@ const page = (await client.fetch(grantsPageQuery)) || {};
           <p class="page-aside__heading">How it works</p>
           <ul class="page-aside__list">
             <li><a href="#eligibility">Eligibility</a></li>
-            <li><a href="#courses">Approved courses</a></li>
+            <li><a href="#approved-courses">Approved courses</a></li>
             <li><a href="#process">Process</a></li>
             <li><a href="#timeline">Timeline</a></li>
             <li><a href="#apply">Apply</a></li>
@@ -41,6 +47,8 @@ const page = (await client.fetch(grantsPageQuery)) || {};
         </div>
       </div>
     </section>
+
+    <GrantForm id="apply" />
   </main>
 
   <Footer />

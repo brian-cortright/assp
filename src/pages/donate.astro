@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PortableText from '../components/PortableText.astro';
+import DonateForm from '../components/DonateForm.astro';
 import { client } from '../lib/sanity';
 import { donatePageQuery } from '../lib/queries';
 
@@ -26,46 +27,55 @@ const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {}
   <Header />
 
   <main id="main-content">
-    <section class="page-hero" aria-labelledby="donate-title">
+    <section class="page-hero page-hero--donate" aria-labelledby="donate-title">
       <div class="page-hero-inner">
         <div>
           {page.hero?.eyebrow && <p class="page-hero-eyebrow" aria-hidden="true">{page.hero.eyebrow}</p>}
           <h1 class="page-hero-title" id="donate-title">{page.hero?.title}</h1>
         </div>
-        {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
+        <div>
+          {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
+          <p class="page-hero-actions">
+            <a href="#give" class="btn btn-white">Give now</a>
+            <a href="#offline" class="btn btn-outline">Other ways to give</a>
+          </p>
+        </div>
       </div>
     </section>
+
+    <DonateForm id="give" />
 
     {page.impactRungs && page.impactRungs.length > 0 && (
       <section class="impact" aria-labelledby="impact-h">
         <div class="impact-inner">
-          <div>
-            {page.impactEyebrow && <p class="impact-eyebrow" aria-hidden="true">{page.impactEyebrow}</p>}
-            <h2 class="impact-headline" id="impact-h">{page.impactHeadline}</h2>
-            {page.impactSubheadline && <p class="impact-sub">{page.impactSubheadline}</p>}
-          </div>
+          {page.impactEyebrow && <p class="impact-kicker" aria-hidden="true">{page.impactEyebrow}</p>}
 
-          <div>
-            <ol class="impact-ladder" aria-label="Where your donation goes">
-              {page.impactRungs.map((rung) => (
-                <li class="impact-rung">
-                  <span class="impact-rung__amount">{rung.amount}</span>
-                  <p class="impact-rung__body">
-                    <strong>{rung.title}</strong>
-                    {rung.body && <> {rung.body}</>}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <ol class="impact-ladder" aria-label="Where your donation goes">
+            {page.impactRungs.map((rung) => (
+              <li class="impact-rung">
+                <span class="impact-rung__amount">{rung.amount}</span>
+                <p class="impact-rung__body">
+                  <strong>{rung.title}</strong>
+                  {rung.body && <> {rung.body}</>}
+                </p>
+              </li>
+            ))}
+          </ol>
+
+          {(page.impactHeadline || page.impactSubheadline) && (
+            <footer class="impact-footer">
+              {page.impactHeadline && <h2 class="impact-footer__headline" id="impact-h">{page.impactHeadline}</h2>}
+              {page.impactSubheadline && <p class="impact-footer__sub">{page.impactSubheadline}</p>}
+            </footer>
+          )}
         </div>
       </section>
     )}
 
-    <section class="page-section page-section--dust" aria-labelledby="give-h">
+    <section class="page-section page-section--dust" id="offline" aria-labelledby="offline-h">
       <div class="page-split">
         <aside class="page-aside">
-          <p class="page-aside__heading">Three ways to give</p>
+          <p class="page-aside__heading">Other ways to give</p>
           <ul class="page-aside__list">
             <li><a href="#online">Online</a></li>
             <li><a href="#check">By check</a></li>
@@ -75,11 +85,12 @@ const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {}
         </aside>
 
         <div class="prose">
+          <h2 id="offline-h" class="visually-hidden">Other ways to give</h2>
           <PortableText value={page.howToGiveBody} />
           {page.disclaimer && (
             <>
               <hr />
-              <p style="font-size: var(--t-sm); color: var(--c-text-3);">{page.disclaimer}</p>
+              <p class="prose-fineprint">{page.disclaimer}</p>
             </>
           )}
         </div>

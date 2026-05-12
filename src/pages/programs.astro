@@ -57,7 +57,7 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
                   </p>
                 )}
                 {prog.cta && (
-                  <p style="margin-top: var(--s-8);">
+                  <p class="program-cta">
                     <a href={prog.cta.href} class={ctaClass(prog.cta)}>{prog.cta.label}</a>
                   </p>
                 )}

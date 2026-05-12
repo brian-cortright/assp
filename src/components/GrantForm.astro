@@ -1,0 +1,110 @@
+---
+/**
+ * Placeholder grant-request form. Captures intent (rider name, sport, brief
+ * narrative) and shows an inline notice on submit. Backend / email handler
+ * lands later; for now the form is the affordance + a tasteful placeholder
+ * acknowledgement so riders don't bounce because there's no button.
+ *
+ * One Clay primary CTA per page; this form's submit is the page's primary.
+ */
+
+interface Props {
+  id?: string;
+}
+const { id = 'apply' } = Astro.props;
+---
+
+<section class="give-form give-form--grant" id={id} aria-labelledby={`${id}-h`}>
+  <div class="give-form__inner">
+    <header class="give-form__head">
+      <p class="give-form__eyebrow" aria-hidden="true">Apply</p>
+      <h2 class="give-form__heading" id={`${id}-h`}>Request support</h2>
+      <p class="give-form__lede">
+        Tell us who you are and what happened. We read every submission. Most
+        requests get a first response inside a week. The intake form below is
+        the front door while we finish the full applicant portal.
+      </p>
+    </header>
+
+    <form class="give-form__form" data-give-form novalidate>
+      <div class="give-form__row">
+        <label class="give-form__field">
+          <span class="give-form__label">Your name</span>
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label class="give-form__field">
+          <span class="give-form__label">Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+      </div>
+
+      <div class="give-form__row">
+        <label class="give-form__field">
+          <span class="give-form__label">Discipline</span>
+          <select name="discipline" required>
+            <option value="">Select one</option>
+            <option>Skating</option>
+            <option>Mountain biking</option>
+            <option>Trail running</option>
+            <option>BMX</option>
+            <option>Snow / ski</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="give-form__field">
+          <span class="give-form__label">Type of request</span>
+          <select name="kind" required>
+            <option value="">Select one</option>
+            <option>Course tuition</option>
+            <option>Protective gear</option>
+            <option>Injury recovery</option>
+            <option>Trail crew / event support</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="give-form__field">
+        <span class="give-form__label">What happened, and what you need</span>
+        <textarea name="story" rows="5" required></textarea>
+      </label>
+
+      <div class="give-form__actions">
+        <button type="submit" class="btn btn-primary">Submit request</button>
+        <p class="give-form__fineprint">
+          We do not share applicant details outside the review committee.
+          See the privacy policy for retention specifics.
+        </p>
+      </div>
+
+      <div class="give-form__notice" data-give-notice hidden role="status" aria-live="polite">
+        <p>
+          <strong>Got it.</strong> The full applicant portal isn't live yet, so
+          we'll follow up by email with the next step. Reach us directly at
+          <a href="mailto:grants@actionsportssafetyproject.com">grants@actionsportssafetyproject.com</a>
+          if it's urgent.
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.give-form--grant [data-give-form]').forEach((formEl) => {
+    const form = formEl as HTMLFormElement;
+    const notice = form.querySelector<HTMLElement>('[data-give-notice]');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (notice) notice.hidden = false;
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement>(
+        'input, textarea, select, button'
+      ).forEach((el) => {
+        el.disabled = true;
+      });
+      notice?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+</script>

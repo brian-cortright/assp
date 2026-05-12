@@ -64,13 +64,30 @@ function renderBlockChildren(block: Block): string {
   return (block.children || []).map((c) => renderSpan(c, block.markDefs)).join('');
 }
 
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function plainText(block: Block): string {
+  return (block.children || []).map((c) => c.text || '').join('');
+}
+
 function renderBlock(block: Block): string {
   const inner = renderBlockChildren(block);
   switch (block.style) {
-    case 'h2':
-      return `<h2>${inner}</h2>`;
-    case 'h3':
-      return `<h3>${inner}</h3>`;
+    case 'h2': {
+      const id = slugify(plainText(block));
+      return `<h2 id="${id}">${inner}</h2>`;
+    }
+    case 'h3': {
+      const id = slugify(plainText(block));
+      return `<h3 id="${id}">${inner}</h3>`;
+    }
     case 'h4':
       return `<h4>${inner}</h4>`;
     case 'blockquote':

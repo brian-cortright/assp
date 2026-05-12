@@ -53,8 +53,6 @@ export const homePageQuery = `*[_type == "homePage"][0] {
     number, label, title, bodyParagraphs, metaTags,
     cta { label, href, variant, external }
   },
-  boardHeadline,
-  boardSubheadline,
   impactEyebrow,
   impactHeadline,
   impactSubheadline,
@@ -73,8 +71,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   missionBody,
   originBody,
   valuesBody,
-  governanceBody,
-  seo { title, description }
+  governanceBody,  boardHeadline,
+  boardSubheadline,  seo { title, description }
 }`;
 
 // ── Programs Page ──────────────────────────────
