@@ -56,10 +56,17 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
         </div>
       </div>
       <div class="hero-rule" aria-hidden="true"></div>
-      <div class="hero-scroll" aria-hidden="true">
-        <span class="hero-scroll__line"></span>
-        <span class="hero-scroll__label">Keep scrolling — there's more</span>
-      </div>
+      <nav class="hero-toc" aria-label="On this page">
+        <span class="hero-toc__line" aria-hidden="true"></span>
+        <span class="hero-toc__index" aria-hidden="true">01</span>
+        <ol class="hero-toc__list" role="list">
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#board">Board</a></li>
+          <li><a href="#impact">Impact</a></li>
+          <li><a href="#donate">Donate</a></li>
+        </ol>
+      </nav>
     </section>
 
     <!-- HERO INTERSTITIAL — full-bleed 3:2 landscape photo. Hidden when no image. -->
@@ -96,8 +103,10 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
     {h.programs && h.programs.length > 0 && (
       <section class="programs" id="programs" aria-labelledby="programs-headline">
         <div class="programs-inner">
-          {h.programsSectionEyebrow && <p class="section-eyebrow" aria-hidden="true">{h.programsSectionEyebrow}</p>}
-          <h2 class="section-headline programs-intro" id="programs-headline">{h.programsSectionHeadline}</h2>
+          <header class="programs-entrance">
+            {h.programsSectionEyebrow && <p class="programs-entrance__eyebrow" aria-hidden="true">{h.programsSectionEyebrow}</p>}
+            <h2 class="programs-entrance__headline" id="programs-headline">{h.programsSectionHeadline}</h2>
+          </header>
 
           {h.programs.map((prog, i) => (
             <article class={`program${prog.image?.asset ? ' program--with-photo' : ''}${i % 2 === 1 ? ' program--photo-left' : ''}`}>
@@ -162,44 +171,45 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
       </section>
     )}
 
-    <!-- IMPACT -->
+    <!-- IMPACT — ladder leads. Framing text demoted to a footer beneath. -->
     {h.impactRungs && h.impactRungs.length > 0 && (
       <section class="impact" id="impact" aria-labelledby="impact-headline">
         <div class="impact-inner">
-          <div>
-            {h.impactEyebrow && <p class="impact-eyebrow" aria-hidden="true">{h.impactEyebrow}</p>}
-            <h2 class="impact-headline" id="impact-headline">{h.impactHeadline}</h2>
-            {h.impactSubheadline && <p class="impact-sub">{h.impactSubheadline}</p>}
-          </div>
+          {h.impactEyebrow && <p class="impact-kicker" aria-hidden="true">{h.impactEyebrow}</p>}
 
-          <div>
-            <ol class="impact-ladder" aria-label="Where your donation goes">
-              {h.impactRungs.map((rung) => (
-                <li class={`impact-rung${rung.image?.asset ? ' impact-rung--with-photo' : ''}`}>
-                  <span class="impact-rung__amount">{rung.amount}</span>
-                  <p class="impact-rung__body">
-                    <strong>{rung.title}</strong>
-                    {rung.body && <> {rung.body}</>}
-                  </p>
-                  {rung.image?.asset && (
-                    <figure class="impact-rung__photo">
-                      <img
-                        src={urlFor(rung.image)!.width(700).height(700).fit('crop').url()}
-                        srcset={`${urlFor(rung.image)!.width(500).height(500).fit('crop').url()} 500w, ${urlFor(rung.image)!.width(700).height(700).fit('crop').url()} 700w`}
-                        sizes="(min-width: 1024px) 30vw, 100vw"
-                        alt={rung.image.alt ?? ''}
-                        loading="lazy"
-                        decoding="async"
-                        width="700"
-                        height="700"
-                      />
-                    </figure>
-                  )}
-                </li>
-              ))}
-            </ol>
-            {h.impactNote && <p class="impact-note">{h.impactNote}</p>}
-          </div>
+          <ol class="impact-ladder" aria-label="Where your donation goes">
+            {h.impactRungs.map((rung) => (
+              <li class={`impact-rung${rung.image?.asset ? ' impact-rung--with-photo' : ''}`}>
+                <span class="impact-rung__amount">{rung.amount}</span>
+                <p class="impact-rung__body">
+                  <strong>{rung.title}</strong>
+                  {rung.body && <> {rung.body}</>}
+                </p>
+                {rung.image?.asset && (
+                  <figure class="impact-rung__photo">
+                    <img
+                      src={urlFor(rung.image)!.width(700).height(700).fit('crop').url()}
+                      srcset={`${urlFor(rung.image)!.width(500).height(500).fit('crop').url()} 500w, ${urlFor(rung.image)!.width(700).height(700).fit('crop').url()} 700w`}
+                      sizes="(min-width: 1024px) 30vw, 100vw"
+                      alt={rung.image.alt ?? ''}
+                      loading="lazy"
+                      decoding="async"
+                      width="700"
+                      height="700"
+                    />
+                  </figure>
+                )}
+              </li>
+            ))}
+          </ol>
+
+          {(h.impactHeadline || h.impactSubheadline || h.impactNote) && (
+            <footer class="impact-footer">
+              {h.impactHeadline && <h2 class="impact-footer__headline" id="impact-headline">{h.impactHeadline}</h2>}
+              {h.impactSubheadline && <p class="impact-footer__sub">{h.impactSubheadline}</p>}
+              {h.impactNote && <p class="impact-note">{h.impactNote}</p>}
+            </footer>
+          )}
         </div>
       </section>
     )}
