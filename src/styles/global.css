@@ -1,85 +1,88 @@
 /* Action Sports Safety Project — global tokens + base styles.
- * Landscape-warm palette: terracotta carry color over trail-dust, pine,
- * and weathered bark neutrals. All hues sit between 30° (clay) and 155°
- * (pine) so nothing reads cool or clinical.
+ * Terrain palette: Pine anchors trust (dark slab, header, footer, dark
+ * sections), Clay carries action (CTAs only), Sand is warm paper, Chalk
+ * is page ground, Stone supports, Ink is body type. All hues sit
+ * between 41 deg (clay) and 158 deg (pine); nothing reads cool or clinical.
+ * See DESIGN.md for the canonical spec.
  * Type: Fraunces display, Inter body, JetBrains Mono meta.
  * 4pt spacing scale.
  */
 
 :root {
-  /* Terrain palette — six committed roles, all warm-side hues. */
-  --clay: oklch(48% 0.155 35); /* terracotta carry color, CTAs */
-  --dust: oklch(82% 0.038 70); /* trail-dust beige slab */
-  --canvas: oklch(95% 0.009 75); /* warm off-white ground */
-  --pine: oklch(34% 0.045 155); /* deep pine forest, dark slab */
-  --moss: oklch(58% 0.07 140); /* recessed green accent */
-  --bark: oklch(28% 0.025 50); /* weathered walnut, header + ink-deep */
-  --ink: oklch(20% 0.018 50); /* warm near-black for type */
+  /* ── Terrain palette (canonical) ────────────────────────────────────── */
+  --pine: oklch(33% 0.04 158); /* #2D4A3E — trust anchor, dark slab */
+  --pine-deep: oklch(26% 0.04 158); /* #1E332B — scrolled header, depth */
+  --pine-line: oklch(40% 0.04 158); /* hairline on Pine surfaces */
+  --pine-soft: oklch(82% 0.022 145); /* light pine wash, accents */
 
-  /* Clay variants. clay-deep clears AA against canvas; clay-pale is the
-   * tinted wash for hover and chip backgrounds. */
-  --clay-deep: oklch(40% 0.16 35);
-  --clay-hover: oklch(43% 0.158 35);
-  --clay-tint: oklch(72% 0.1 35);
-  --clay-pale: oklch(94% 0.03 35);
+  --clay: oklch(58% 0.16 41); /* #C4622D — action color, CTAs only */
+  --clay-deep: oklch(48% 0.15 41); /* #A24E20 — hover/active state */
+  --clay-hover: oklch(50% 0.155 41);
+  --clay-tint: oklch(78% 0.09 41); /* light clay, for text on Pine */
+  --clay-pale: oklch(92% 0.05 41); /* #F2DCC9 — washes, chip bg */
 
-  /* Pine variants for the dark slab and the footer. */
-  --pine-deep: oklch(24% 0.04 155);
-  --pine-line: oklch(40% 0.045 155);
-  --pine-soft: oklch(82% 0.025 145);
+  --sand: oklch(92% 0.03 80); /* #F2E8D9 — warm paper surface */
+  --sand-line: oklch(82% 0.03 75); /* sand-on-sand divider */
 
-  /* Bark variants for the sticky header (warm dark wood, not terracotta). */
-  --bark-line: oklch(34% 0.028 50);
+  --chalk: oklch(97% 0.008 75); /* #FAF7F2 — page ground (never #fff) */
 
-  /* On-clay text — warm off-white reading on terracotta. */
-  --c-on-primary: oklch(98% 0.004 80);
-  --c-on-primary-sub: oklch(90% 0.022 35);
+  --stone: oklch(56% 0.015 60); /* #8B8178 — support text, captions */
+  --stone-line: oklch(82% 0.012 70); /* #C6BFB5 — borders on light */
+  --stone-soft: oklch(80% 0.022 60); /* body-on-pine sub */
 
-  /* On-bark text for the sticky header. */
-  --c-on-bark: oklch(96% 0.012 75);
-  --c-on-bark-sub: oklch(82% 0.025 60);
+  --ink: oklch(20% 0.008 50); /* #1C1917 — body type (never #000) */
+  --ink-2: oklch(34% 0.012 55); /* secondary body */
+  --ink-3: oklch(48% 0.012 55); /* tertiary / meta */
 
-  /* Neutrals derived from the terrain palette. All warm-tinted. */
-  --c-surface: var(--canvas);
-  --c-surface-subtle: oklch(92% 0.014 75);
-  --c-border: oklch(86% 0.012 75);
-  --c-border-strong: oklch(76% 0.016 70);
+  /* On-color text */
+  --c-on-primary: var(--chalk); /* text on Clay */
+  --c-on-primary-sub: oklch(92% 0.04 41); /* sub-text on Clay */
+  --c-on-pine: var(--chalk); /* text on Pine */
+  --c-on-pine-sub: var(--pine-soft); /* sub-text on Pine */
+  --c-on-bark: var(--c-on-pine); /* legacy alias */
+  --c-on-bark-sub: var(--c-on-pine-sub);
+
+  /* Semantic surface roles */
+  --c-surface: var(--chalk);
+  --c-surface-subtle: oklch(94% 0.012 75);
+  --c-border: var(--stone-line);
+  --c-border-strong: oklch(72% 0.014 65);
   --c-text: var(--ink);
-  --c-text-2: oklch(32% 0.018 50);
-  --c-text-3: oklch(42% 0.015 50);
+  --c-text-2: var(--ink-2);
+  --c-text-3: var(--ink-3);
 
-  /* Compatibility aliases — older selectors reference these. */
+  /* Action aliases — selectors throughout reference these names. */
   --c-primary: var(--clay);
   --c-primary-dark: var(--clay-deep);
   --c-primary-hover: var(--clay-hover);
   --c-primary-tint: var(--clay-tint);
   --c-primary-pale: var(--clay-pale);
-  --c-primary-ghost: oklch(97% 0.015 35);
+  --c-primary-ghost: oklch(95% 0.025 41);
 
-  /* Aliases kept for selectors that still reference the old names.
-   * Pine and moss are restricted to tertiary accent use only; the dark
-   * slab role is carried by bark so header, impact, and footer share
-   * one warm-walnut surface. */
-  --chalk: var(--canvas);
-  --sand: var(--dust);
-  --stone: var(--bark);
-  --stone-deep: var(--bark);
-  --stone-line: var(--bark-line);
-  --stone-soft: oklch(80% 0.022 60);
+  /* Legacy aliases — old names now point at the canonical terrain palette.
+   * --bark and --dust were the previous walnut/beige; today the dark slab
+   * is Pine and the paper slab is Sand. Selectors using --bark, --dust,
+   * --canvas, --stone-deep keep working without per-selector edits. */
+  --bark: var(--pine);
+  --bark-line: var(--pine-line);
+  --dust: var(--sand);
+  --canvas: var(--chalk);
+  --stone-deep: var(--stone);
+  --moss: oklch(58% 0.07 140); /* kept for compatibility; unused */
   --lichen: var(--moss);
 
-  /* Footer (bark — matches the sticky header). */
-  --c-footer: var(--bark);
-  --c-footer-border: var(--bark-line);
-  --c-footer-text: oklch(90% 0.022 60);
-  --c-footer-sub: oklch(70% 0.025 60);
+  /* Footer is Pine — matches the sticky header. */
+  --c-footer: var(--pine);
+  --c-footer-border: var(--pine-line);
+  --c-footer-text: oklch(92% 0.022 145);
+  --c-footer-sub: oklch(72% 0.025 145);
 
   /* Semantic */
-  --c-error: oklch(46% 0.2 20);
-  --c-error-bg: oklch(97% 0.03 20);
-  --c-success: oklch(44% 0.18 145);
-  --c-success-bg: oklch(96% 0.04 145);
-  --c-focus: oklch(58% 0.18 50);
+  --c-error: oklch(46% 0.17 28);
+  --c-error-bg: oklch(96% 0.025 28);
+  --c-success: oklch(48% 0.12 158);
+  --c-success-bg: oklch(94% 0.04 158);
+  --c-focus: var(--clay);
 
   /* Typography */
   --f-display: "Fraunces", "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -231,21 +234,21 @@ ul {
   outline-offset: 3px;
 }
 .btn-white {
-  background: var(--c-on-primary);
-  color: var(--c-primary);
+  background: var(--chalk);
+  color: var(--pine);
 }
 .btn-white:hover {
-  background: var(--c-primary-pale);
-  color: var(--c-primary-dark);
+  background: var(--sand);
+  color: var(--pine-deep);
 }
 .btn-outline {
   background: transparent;
-  color: var(--c-on-primary);
-  border-color: oklch(68% 0.09 30 / 0.65);
+  color: var(--c-on-pine);
+  border-color: var(--pine-line);
 }
 .btn-outline:hover {
-  border-color: var(--c-on-primary);
-  background: oklch(100% 0 0 / 0.08);
+  border-color: var(--c-on-pine);
+  background: oklch(97% 0.008 75 / 0.08);
 }
 .btn-terra {
   background: var(--c-primary);
@@ -261,13 +264,13 @@ ul {
 }
 .btn-ghost {
   background: transparent;
-  color: var(--c-primary-dark);
+  color: var(--pine);
   border-color: var(--c-border-strong);
 }
 .btn-ghost:hover {
-  border-color: var(--c-primary);
-  color: var(--c-primary);
-  background: var(--c-primary-pale);
+  border-color: var(--pine);
+  color: var(--pine-deep);
+  background: var(--sand);
 }
 .btn-terra:hover {
   background: var(--c-primary-dark);
@@ -291,10 +294,8 @@ ul {
     border-color var(--dur-base) var(--ease-out);
 }
 .nav.nav--scrolled {
-  background: oklch(28% 0.025 50 / 0.94);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom-color: oklch(20% 0.02 50 / 0.7);
+  background: var(--pine-deep);
+  border-bottom-color: var(--pine-line);
 }
 
 .nav-logo {
@@ -395,7 +396,7 @@ ul {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: var(--c-primary-dark);
+  background: var(--pine);
   display: none;
   flex-direction: column;
   padding: 88px var(--s-6) var(--s-8);
@@ -409,21 +410,21 @@ ul {
   font-size: var(--t-xl);
   font-weight: 400;
   font-style: italic;
-  color: var(--c-on-primary-sub);
+  color: var(--c-on-pine-sub);
   text-decoration: none;
   padding: var(--s-5) 0;
-  border-bottom: 1px solid oklch(38% 0.13 30 / 0.4);
+  border-bottom: 1px solid var(--pine-line);
   transition: color var(--dur-fast) var(--ease-out);
 }
 .nav-drawer a:hover {
-  color: var(--c-on-primary);
+  color: var(--c-on-pine);
 }
 .nav-drawer .drawer-donate {
   margin-top: var(--s-8);
   font-style: normal;
   text-align: center;
-  background: var(--c-on-primary);
-  color: var(--c-primary);
+  background: var(--clay);
+  color: var(--c-on-primary);
   border-radius: var(--r-sm);
   padding: var(--s-5);
   font-family: var(--f-mono);
@@ -433,10 +434,10 @@ ul {
   border: none;
 }
 
-/* Hero */
+/* Hero — Pine drench, topography in white stroke, single Clay CTA inside. */
 .hero {
   min-height: 100svh;
-  background: var(--c-primary);
+  background: var(--pine);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -460,7 +461,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--c-on-primary-sub);
+  color: var(--c-on-pine-sub);
   margin-bottom: var(--s-8);
 }
 .hero-headline {
@@ -469,7 +470,7 @@ ul {
   font-weight: var(--w-display);
   line-height: 1.02;
   letter-spacing: -0.025em;
-  color: var(--c-on-primary);
+  color: var(--c-on-pine);
   max-width: 18ch;
   margin-bottom: var(--s-8);
 }
@@ -477,7 +478,7 @@ ul {
   font-family: var(--f-body);
   font-size: clamp(1rem, 1.2vw + 0.5rem, 1.25rem);
   line-height: 1.6;
-  color: var(--c-on-primary-sub);
+  color: var(--c-on-pine-sub);
   max-width: 52ch;
   margin-bottom: var(--s-10);
 }
@@ -489,7 +490,7 @@ ul {
 }
 .hero-rule {
   height: 1px;
-  background: oklch(38% 0.13 30 / 0.5);
+  background: var(--pine-line);
   margin: 0 var(--s-8);
 }
 .hero-scroll {
@@ -504,14 +505,14 @@ ul {
 .hero-scroll__line {
   width: 32px;
   height: 1px;
-  background: var(--c-on-primary-sub);
+  background: var(--c-on-pine-sub);
 }
 .hero-scroll__label {
   font-family: var(--f-mono);
   font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--c-on-primary-sub);
+  color: var(--c-on-pine-sub);
 }
 
 .hero-topo {
@@ -522,6 +523,7 @@ ul {
   pointer-events: none;
 }
 .topo-group {
+  opacity: 0.22;
   animation: topo-in 2s var(--ease-out) 0.2s both;
 }
 @keyframes topo-in {
@@ -529,7 +531,7 @@ ul {
     opacity: 0;
   }
   to {
-    opacity: 1;
+    opacity: 0.22;
   }
 }
 
@@ -596,9 +598,9 @@ ul {
 
 /* Grants */
 .grants {
-  background: var(--c-primary-pale);
-  border-top: 1px solid var(--c-border);
-  border-bottom: 1px solid var(--c-border);
+  background: var(--sand);
+  border-top: 1px solid var(--sand-line);
+  border-bottom: 1px solid var(--sand-line);
   padding: var(--s-24) var(--s-8);
 }
 .grants-inner {
@@ -611,7 +613,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--c-primary);
+  color: var(--ink-3);
   margin-bottom: var(--s-5);
 }
 .section-headline {
@@ -664,7 +666,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-2xl);
   font-weight: 400;
-  color: var(--c-primary);
+  color: var(--pine);
   line-height: 1;
   padding-top: 3px;
   font-variant-numeric: tabular-nums;
@@ -710,7 +712,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-xs);
   font-weight: 500;
-  color: var(--c-primary);
+  color: var(--pine);
   letter-spacing: 0.05em;
   min-width: 76px;
 }
@@ -762,7 +764,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-base);
   font-weight: 500;
-  color: var(--c-primary);
+  color: var(--pine);
   min-width: 60px;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
@@ -832,7 +834,7 @@ ul {
     color var(--dur-fast) var(--ease-out);
 }
 .amount-option label:hover {
-  border-color: var(--c-primary-tint);
+  border-color: var(--c-border-strong);
 }
 .amount-option input:checked + label {
   background: var(--c-primary);
@@ -866,19 +868,20 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-base);
   color: var(--c-text);
-  background: var(--c-surface-subtle);
-  border: 1.5px solid var(--c-border);
+  background: var(--sand);
+  border: 2px solid var(--c-border-strong);
   border-radius: var(--r-sm);
   min-height: 44px;
+  box-shadow: inset 0 1px 0 oklch(0% 0 0 / 0.04);
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 .custom-input:hover {
   border-color: var(--c-border-strong);
 }
 .custom-input:focus {
-  outline: none;
-  border-color: var(--c-primary);
-  box-shadow: 0 0 0 3px oklch(44% 0.155 30 / 0.12);
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+  border-color: var(--pine);
 }
 .custom-input[aria-invalid="true"] {
   border-color: var(--c-error);
@@ -903,10 +906,11 @@ ul {
   padding: var(--s-3) var(--s-4);
   font-size: var(--t-base);
   color: var(--c-text);
-  background: var(--c-surface);
-  border: 1.5px solid var(--c-border);
+  background: var(--sand);
+  border: 2px solid var(--c-border-strong);
   border-radius: var(--r-sm);
   min-height: 44px;
+  box-shadow: inset 0 1px 0 oklch(0% 0 0 / 0.04);
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 .form-field input::placeholder {
@@ -916,9 +920,9 @@ ul {
   border-color: var(--c-border-strong);
 }
 .form-field input:focus {
-  outline: none;
-  border-color: var(--c-primary);
-  box-shadow: 0 0 0 3px oklch(44% 0.155 30 / 0.12);
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+  border-color: var(--pine);
 }
 .form-field input[aria-invalid="true"] {
   border-color: var(--c-error);
@@ -1043,7 +1047,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--clay-tint);
+  color: var(--c-on-pine-sub);
   margin-bottom: var(--s-3);
 }
 .page-hero-title {
@@ -1125,16 +1129,16 @@ ul {
   padding-left: var(--s-2);
 }
 .prose li::marker {
-  color: var(--c-primary);
+  color: var(--stone);
 }
 .prose a {
-  color: var(--c-primary);
+  color: var(--pine);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 .prose a:hover {
-  color: var(--c-primary-dark);
+  color: var(--pine-deep);
 }
 .prose hr {
   border: 0;
@@ -1174,7 +1178,7 @@ ul {
   color: var(--c-text-3);
 }
 .page-aside__heading {
-  color: var(--c-primary);
+  color: var(--pine);
   margin-bottom: var(--s-4);
 }
 .page-aside__list {
@@ -1226,7 +1230,7 @@ ul {
   line-height: 1.3;
 }
 .fact dd a {
-  color: var(--c-primary-dark);
+  color: var(--pine);
   text-decoration: none;
 }
 .fact dd a:hover {
@@ -1289,11 +1293,11 @@ ul {
   grid-template-columns: 5fr 7fr;
   gap: var(--s-16);
   padding: var(--s-16) 0;
-  border-top: 1px solid oklch(72% 0.04 78);
+  border-top: 1px solid var(--sand-line);
   align-items: start;
 }
 .program:last-child {
-  border-bottom: 1px solid oklch(72% 0.04 78);
+  border-bottom: 1px solid var(--sand-line);
 }
 .program-index {
   font-family: var(--f-mono);
@@ -1301,7 +1305,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--clay-deep);
+  color: var(--pine);
   margin-bottom: var(--s-6);
   display: flex;
   gap: var(--s-3);
@@ -1309,7 +1313,7 @@ ul {
 }
 .program-index__num {
   font-variant-numeric: tabular-nums;
-  color: var(--clay);
+  color: var(--pine);
   font-size: var(--t-base);
 }
 .program-title {
@@ -1348,10 +1352,10 @@ ul {
 }
 .program-meta span::before {
   content: "";
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--clay);
+  background: var(--stone);
   display: inline-block;
 }
 .programs-intro {
@@ -1360,7 +1364,7 @@ ul {
 }
 
 /* ===========================================
-   BOARD — chalk, monogram + name + role
+   BOARD — chalk, typographic roster (no cards)
 =========================================== */
 .board {
   background: var(--c-surface);
@@ -1371,61 +1375,65 @@ ul {
 .board-inner {
   max-width: 1200px;
   margin: 0 auto;
-}
-.board-header {
   display: grid;
-  grid-template-columns: 5fr 6fr;
+  grid-template-columns: 5fr 7fr;
   gap: var(--s-16);
-  align-items: end;
-  margin-bottom: var(--s-16);
+  align-items: start;
 }
-.board-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--s-8);
-}
-.board-card {
+.board-intro {
   display: flex;
   flex-direction: column;
-  gap: var(--s-4);
+  gap: var(--s-5);
+  max-width: 32ch;
 }
-.board-monogram {
-  width: 100%;
-  aspect-ratio: 1;
+@media (min-width: 1025px) {
+  .board-intro {
+    position: sticky;
+    top: var(--s-20);
+  }
+}
+.board-roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--stone-line);
+}
+.board-row {
   display: grid;
-  place-items: center;
-  background: var(--clay-pale);
-  color: var(--clay-deep);
-  border-radius: 50%;
-  font-family: var(--f-display);
-  font-weight: var(--w-display);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  letter-spacing: -0.02em;
-  margin-bottom: var(--s-2);
+  grid-template-columns: auto 1fr auto;
+  gap: var(--s-6);
+  align-items: baseline;
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--stone-line);
 }
-.board-card:nth-child(2n) .board-monogram {
-  background: oklch(92% 0.04 130);
-  color: oklch(36% 0.05 130);
-}
-.board-card:nth-child(3n) .board-monogram {
-  background: oklch(91% 0.025 60);
-  color: var(--bark);
+.board-index {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--stone);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  align-self: center;
+  min-width: 2.25ch;
 }
 .board-name {
   font-family: var(--f-display);
   font-weight: var(--w-display);
-  font-size: var(--t-base);
-  color: var(--c-text);
-  letter-spacing: -0.005em;
-  line-height: 1.2;
+  font-size: clamp(1.25rem, 1.4vw + 0.6rem, 1.5rem);
+  color: var(--pine);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0;
 }
 .board-role {
   font-family: var(--f-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--c-text-3);
+  color: var(--ink-3);
   line-height: 1.5;
+  text-align: right;
+  margin: 0;
 }
 
 /* ===========================================
@@ -1489,7 +1497,7 @@ ul {
   font-weight: var(--w-display);
   font-size: var(--t-2xl);
   letter-spacing: -0.01em;
-  color: var(--clay-tint);
+  color: var(--chalk);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -1519,25 +1527,16 @@ ul {
 }
 
 /* ===========================================
-   SECOND DONATE — clay drench, condensed
+   SECOND DONATE — Sand slab, single Clay CTA inside.
+   Clay is tertiary: no full-section drench.
 =========================================== */
 .donate-cta {
-  background: var(--clay);
+  background: var(--sand);
   padding: var(--s-20) var(--s-8);
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid var(--clay-deep);
-}
-.donate-cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    135deg,
-    transparent 0 60px,
-    oklch(70% 0.12 35 / 0.2) 60px 61px
-  );
-  pointer-events: none;
+  border-top: 1px solid var(--sand-line);
+  border-bottom: 1px solid var(--sand-line);
 }
 .donate-cta-inner {
   max-width: 1200px;
@@ -1554,7 +1553,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--c-on-primary-sub);
+  color: var(--ink-3);
   margin-bottom: var(--s-4);
 }
 .donate-cta-headline {
@@ -1563,7 +1562,7 @@ ul {
   font-size: clamp(2rem, 3.5vw + 0.5rem, 3rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
-  color: var(--c-on-primary);
+  color: var(--ink);
   max-width: 22ch;
 }
 .donate-cta-actions {
@@ -1714,15 +1713,13 @@ ul {
   }
   .problem-inner,
   .impact-inner,
-  .board-header {
+  .board-inner {
+    grid-template-columns: 1fr;
     gap: var(--s-10);
   }
-  .board-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--s-10);
-  }
-  .board-card:nth-child(n + 4) {
-    grid-column: span 1;
+  .board-intro {
+    position: static;
+    max-width: 60ch;
   }
   .donate-cta-inner {
     grid-template-columns: 1fr;
@@ -1791,8 +1788,7 @@ ul {
     padding: var(--s-16) var(--s-5);
   }
   .problem-inner,
-  .impact-inner,
-  .board-header {
+  .impact-inner {
     grid-template-columns: 1fr;
     gap: var(--s-8);
   }
@@ -1801,9 +1797,14 @@ ul {
     gap: var(--s-6);
     padding: var(--s-12) 0;
   }
-  .board-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--s-8);
+  .board-row {
+    grid-template-columns: auto 1fr;
+    gap: var(--s-4) var(--s-5);
+    align-items: baseline;
+  }
+  .board-role {
+    grid-column: 2;
+    text-align: left;
   }
   .donate-cta {
     padding: var(--s-16) var(--s-5);

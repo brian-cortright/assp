@@ -56,7 +56,7 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
       <div class="hero-rule" aria-hidden="true"></div>
       <div class="hero-scroll" aria-hidden="true">
         <span class="hero-scroll__line"></span>
-        <span class="hero-scroll__label">Scroll to learn more</span>
+        <span class="hero-scroll__label">Keep scrolling — there's more</span>
       </div>
     </section>
 
@@ -110,22 +110,22 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
     {board && board.length > 0 && (
       <section class="board" id="board" aria-labelledby="board-headline">
         <div class="board-inner">
-          <div class="board-header">
+          <div class="board-intro">
             <h2 class="section-headline" id="board-headline">{h.boardHeadline}</h2>
             {h.boardSubheadline && (
               <p class="section-sub section-sub--flush">{h.boardSubheadline}</p>
             )}
           </div>
 
-          <ul class="board-grid" role="list">
-            {board.map((member) => (
-              <li class="board-card">
-                <span class="board-monogram" aria-hidden="true">{member.initials}</span>
+          <ol class="board-roster" role="list">
+            {board.map((member, i) => (
+              <li class="board-row">
+                <span class="board-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <p class="board-name">{member.name}</p>
                 <p class="board-role">{member.role}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
     )}
@@ -168,10 +168,10 @@ const ctaClass = (c?: Cta, fallback = 'btn-primary') =>
           </div>
           <div class="donate-cta-actions">
             {h.donateCTAPrimaryCta && (
-              <a href={h.donateCTAPrimaryCta.href} class={ctaClass(h.donateCTAPrimaryCta, 'btn-white')}>{h.donateCTAPrimaryCta.label}</a>
+              <a href={h.donateCTAPrimaryCta.href} class={ctaClass(h.donateCTAPrimaryCta, 'btn-primary')}>{h.donateCTAPrimaryCta.label}</a>
             )}
             {h.donateCTASecondaryCta && (
-              <a href={h.donateCTASecondaryCta.href} class={ctaClass(h.donateCTASecondaryCta, 'btn-outline')}>{h.donateCTASecondaryCta.label}</a>
+              <a href={h.donateCTASecondaryCta.href} class={ctaClass(h.donateCTASecondaryCta, 'btn-ghost')}>{h.donateCTASecondaryCta.label}</a>
             )}
           </div>
         </div>
