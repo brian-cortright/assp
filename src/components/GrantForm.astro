@@ -6,6 +6,13 @@
  * acknowledgement so riders don't bounce because there's no button.
  *
  * One Clay primary CTA per page; this form's submit is the page's primary.
+ *
+ * Accessibility contract (mirrors DonateForm):
+ *   - Required inputs have inline error spans wired via aria-describedby.
+ *   - On invalid submit: populate errors with validationMessage, set
+ *     aria-invalid, focus first invalid.
+ *   - On valid submit: focus the notice <strong> (tabindex="-1") so the
+ *     announcement is guaranteed, not heuristic.
  */
 
 interface Props {
@@ -18,30 +25,44 @@ const { id = 'apply' } = Astro.props;
   <div class="give-form__inner">
     <header class="give-form__head">
       <p class="give-form__eyebrow" aria-hidden="true">Apply</p>
-      <h2 class="give-form__heading" id={`${id}-h`}>Request support</h2>
+      <h2 class="give-form__heading" id={`${id}-h`}>Apply for a grant</h2>
       <p class="give-form__lede">
-        Tell us who you are and what happened. We read every submission. Most
-        requests get a first response inside a week. The intake form below is
-        the front door while we finish the full applicant portal.
+        Tell us who you are, what you ride, and what happened. We read every one.
+        Most riders hear back inside a week.
       </p>
+      <p class="give-form__required-note">All fields below are required.</p>
     </header>
 
     <form class="give-form__form" data-give-form novalidate>
       <div class="give-form__row">
         <label class="give-form__field">
           <span class="give-form__label">Your name</span>
-          <input type="text" name="name" autocomplete="name" required />
+          <input
+            type="text"
+            name="name"
+            autocomplete="name"
+            required
+            aria-describedby="apply-name-err"
+          />
+          <span class="give-form__error" id="apply-name-err" hidden></span>
         </label>
         <label class="give-form__field">
           <span class="give-form__label">Email</span>
-          <input type="email" name="email" autocomplete="email" required />
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            required
+            aria-describedby="apply-email-err"
+          />
+          <span class="give-form__error" id="apply-email-err" hidden></span>
         </label>
       </div>
 
       <div class="give-form__row">
         <label class="give-form__field">
           <span class="give-form__label">Discipline</span>
-          <select name="discipline" required>
+          <select name="discipline" required aria-describedby="apply-discipline-err">
             <option value="">Select one</option>
             <option>Skating</option>
             <option>Mountain biking</option>
@@ -50,38 +71,49 @@ const { id = 'apply' } = Astro.props;
             <option>Snow / ski</option>
             <option>Other</option>
           </select>
+          <span class="give-form__error" id="apply-discipline-err" hidden></span>
         </label>
         <label class="give-form__field">
           <span class="give-form__label">Type of request</span>
-          <select name="kind" required>
+          <select name="kind" required aria-describedby="apply-kind-err">
             <option value="">Select one</option>
             <option>Course tuition</option>
             <option>Protective gear</option>
             <option>Injury recovery</option>
             <option>Trail crew / event support</option>
           </select>
+          <span class="give-form__error" id="apply-kind-err" hidden></span>
         </label>
       </div>
 
       <label class="give-form__field">
         <span class="give-form__label">What happened, and what you need</span>
-        <textarea name="story" rows="5" required></textarea>
+        <textarea
+          name="story"
+          rows="5"
+          required
+          aria-describedby="apply-story-err"
+          placeholder="A few sentences is plenty. Specifics help: the discipline, the injury or gear gap, the course or item, what timing looks like."
+        ></textarea>
+        <span class="give-form__error" id="apply-story-err" hidden></span>
       </label>
 
       <div class="give-form__actions">
-        <button type="submit" class="btn btn-primary">Submit request</button>
+        <button type="submit" class="btn btn-primary">Send it in</button>
         <p class="give-form__fineprint">
-          We do not share applicant details outside the review committee.
-          See the privacy policy for retention specifics.
+          Applicant details stay with the review committee. The privacy policy
+          spells out exactly what we keep and for how long.
         </p>
       </div>
 
-      <div class="give-form__notice" data-give-notice hidden role="status" aria-live="polite">
+      <div class="give-form__notice" data-give-notice hidden role="status">
         <p>
-          <strong>Got it.</strong> The full applicant portal isn't live yet, so
-          we'll follow up by email with the next step. Reach us directly at
+          <strong tabindex="-1">Got it.</strong>
+          The full applicant portal isn't live yet, so the next step is an email
+          from a real person on the committee. Most go out inside a week. If it's
+          urgent, write
           <a href="mailto:grants@actionsportssafetyproject.com">grants@actionsportssafetyproject.com</a>
-          if it's urgent.
+          directly.
         </p>
       </div>
     </form>
@@ -92,12 +124,57 @@ const { id = 'apply' } = Astro.props;
   document.querySelectorAll('.give-form--grant [data-give-form]').forEach((formEl) => {
     const form = formEl as HTMLFormElement;
     const notice = form.querySelector<HTMLElement>('[data-give-notice]');
+    const noticeHeading = notice?.querySelector<HTMLElement>('strong');
+
+    const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
+      const describedBy = input.getAttribute('aria-describedby');
+      if (!describedBy) return;
+      const errEl = document.getElementById(describedBy);
+      if (!errEl) return;
+      errEl.textContent = input.validationMessage;
+      errEl.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+    };
+    const clearError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
+      const describedBy = input.getAttribute('aria-describedby');
+      if (describedBy) {
+        const errEl = document.getElementById(describedBy);
+        if (errEl) {
+          errEl.hidden = true;
+          errEl.textContent = '';
+        }
+      }
+      input.removeAttribute('aria-invalid');
+    };
+
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+      'input[aria-describedby], textarea[aria-describedby], select[aria-describedby]'
+    ).forEach((input) => {
+      const handler = () => {
+        if (input.checkValidity()) clearError(input);
+      };
+      input.addEventListener('input', handler);
+      input.addEventListener('change', handler);
+    });
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+        '[aria-invalid="true"]'
+      ).forEach(clearError);
+
       if (!form.checkValidity()) {
-        form.reportValidity();
+        const invalids = Array.from(
+          form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+            ':invalid'
+          )
+        ).filter((el) => el.hasAttribute('aria-describedby'));
+        invalids.forEach(showError);
+        invalids[0]?.focus();
         return;
       }
+
       if (notice) notice.hidden = false;
       form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement>(
         'input, textarea, select, button'
@@ -109,6 +186,7 @@ const { id = 'apply' } = Astro.props;
         behavior: prefersReducedMotion ? 'auto' : 'smooth',
         block: 'nearest',
       });
+      noticeHeading?.focus({ preventScroll: true });
     });
   });
 </script>

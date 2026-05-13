@@ -47,6 +47,7 @@ const navLinks: NavLink[] = settings.navLinks?.length
     ))}
   </ul>
   <button
+    type="button"
     class="nav-burger"
     id="nav-burger"
     aria-controls="nav-drawer"
@@ -57,7 +58,7 @@ const navLinks: NavLink[] = settings.navLinks?.length
   </button>
 </nav>
 
-<nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation" aria-hidden="true">
+<nav class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true">
   {navLinks.map((link) => (
     <a
       href={link.href}
@@ -82,19 +83,41 @@ const navLinks: NavLink[] = settings.navLinks?.length
   const burger = document.getElementById('nav-burger');
   const drawer = document.getElementById('nav-drawer');
   if (burger && drawer) {
-    const drawerLinks = drawer.querySelectorAll('a');
+    const drawerLinks = drawer.querySelectorAll<HTMLAnchorElement>('a');
+    const firstFocusable = drawerLinks[0];
+    const lastFocusable = drawerLinks[drawerLinks.length - 1];
+
+    // Focus trap: Tab from the last link wraps to the first, Shift+Tab from
+    // the first link wraps to the last. WCAG 2.4.3 / 2.4.11. Only attached
+    // while the drawer is open so it doesn't interfere with desktop tab order.
+    const trapTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !firstFocusable || !lastFocusable) return;
+      const active = document.activeElement;
+      if (e.shiftKey && active === firstFocusable) {
+        e.preventDefault();
+        lastFocusable.focus();
+      } else if (!e.shiftKey && active === lastFocusable) {
+        e.preventDefault();
+        firstFocusable.focus();
+      }
+    };
+
     const openDrawer = () => {
       burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Close navigation menu');
       drawer.classList.add('is-open');
       drawer.removeAttribute('aria-hidden');
       document.body.style.overflow = 'hidden';
-      (drawerLinks[0] as HTMLElement | undefined)?.focus();
+      firstFocusable?.focus();
+      document.addEventListener('keydown', trapTab);
     };
     const closeDrawer = () => {
       burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Open navigation menu');
       drawer.classList.remove('is-open');
       drawer.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      document.removeEventListener('keydown', trapTab);
       burger.focus();
     };
     burger.addEventListener('click', () => {
