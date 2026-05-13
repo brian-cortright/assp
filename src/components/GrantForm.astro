@@ -104,7 +104,11 @@ const { id = 'apply' } = Astro.props;
       ).forEach((el) => {
         el.disabled = true;
       });
-      notice?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      notice?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'nearest',
+      });
     });
   });
 </script>

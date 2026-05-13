@@ -16,6 +16,15 @@ interface ContactPage {
 }
 
 const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) || {};
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
 ---
 
 <Base title={page.seo?.title} description={page.seo?.description}>
@@ -53,16 +62,24 @@ const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) ||
           <>
             <hr class="contact-divider" />
             <div class="prose prose-narrow">
-              <h2>Frequently asked</h2>
+              <h2 id="faq">Frequently asked</h2>
               <ul class="faq-list" role="list">
-                {page.faq.map((item) => (
-                  <li class="faq-item">
-                    <details>
-                      <summary>{item.question}</summary>
-                      <p>{item.answer}</p>
-                    </details>
-                  </li>
-                ))}
+                {page.faq.map((item) => {
+                  const slug = item.question ? `faq-${slugify(item.question)}` : undefined;
+                  return (
+                    <li class="faq-item" id={slug}>
+                      <details>
+                        <summary>
+                          <h3 class="faq-item__q">{item.question}</h3>
+                          <span class="faq-item__icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="faq-item__a">
+                          <p>{item.answer}</p>
+                        </div>
+                      </details>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </>
@@ -73,3 +90,28 @@ const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) ||
 
   <Footer />
 </Base>
+
+<script>
+  /**
+   * FAQ deep-linking: if the URL hash matches an faq-item, open its <details>
+   * and move focus to the summary so screen reader users land on the
+   * disclosure with state announced. Respects prefers-reduced-motion for
+   * the scroll behavior.
+   */
+  function openFromHash() {
+    const hash = window.location.hash;
+    if (!hash || !hash.startsWith('#faq-')) return;
+    const item = document.querySelector<HTMLLIElement>(hash);
+    if (!item) return;
+    const details = item.querySelector('details');
+    const summary = item.querySelector<HTMLElement>('summary');
+    if (details) details.open = true;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    summary?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    summary?.focus();
+  }
+
+  window.addEventListener('hashchange', openFromHash);
+  // Defer so layout settles; the section is statically rendered above the fold.
+  document.addEventListener('DOMContentLoaded', openFromHash);
+</script>
