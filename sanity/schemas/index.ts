@@ -13,6 +13,7 @@ import { certification } from "./documents/certification";
 // Object schemas
 import { seo } from "./objects/seo";
 import { cta } from "./objects/cta";
+import { navItem } from "./objects/navItem";
 import { pageHero } from "./objects/pageHero";
 import { impactRung } from "./objects/impactRung";
 import { program } from "./objects/program";
@@ -20,6 +21,7 @@ import { missionFact } from "./objects/missionFact";
 import { contactChannel } from "./objects/contactChannel";
 import { faqItem } from "./objects/faqItem";
 import { editorialImage } from "./objects/editorialImage";
+import { formCopy } from "./objects/formCopy";
 
 export const schemaTypes = [
   // Documents
@@ -36,6 +38,7 @@ export const schemaTypes = [
   // Objects
   seo,
   cta,
+  navItem,
   pageHero,
   impactRung,
   program,
@@ -43,4 +46,5 @@ export const schemaTypes = [
   contactChannel,
   faqItem,
   editorialImage,
+  formCopy,
 ];

@@ -17,20 +17,63 @@
 
 interface Props {
   id?: string;
+  eyebrow?: string;
+  heading?: string;
+  lede?: string;
+  requiredNote?: string;
+  submitLabel?: string;
+  fineprint?: string;
+  noticeHeading?: string;
+  noticeBody?: string;
+  urgentEmail?: string;
+  disciplineOptions?: string[];
+  kindOptions?: string[];
 }
-const { id = 'apply' } = Astro.props;
+const {
+  id = 'apply',
+  eyebrow: eyebrowProp,
+  heading: headingProp,
+  lede: ledeProp,
+  requiredNote: requiredNoteProp,
+  submitLabel: submitLabelProp,
+  fineprint: fineprintProp,
+  noticeHeading: noticeHeadingProp,
+  noticeBody: noticeBodyProp,
+  urgentEmail: urgentEmailProp,
+  disciplineOptions: disciplineOptionsProp,
+  kindOptions: kindOptionsProp,
+} = Astro.props;
+
+const eyebrow = eyebrowProp ?? 'Apply';
+const heading = headingProp ?? 'Apply for a grant';
+const lede =
+  ledeProp ??
+  'Tell us who you are, what you ride, and what happened. We read every one. Most riders hear back inside a week.';
+const requiredNote = requiredNoteProp ?? 'All fields below are required.';
+const submitLabel = submitLabelProp ?? 'Send it in';
+const fineprint =
+  fineprintProp ??
+  'Applicant details stay with the review committee. The privacy policy spells out exactly what we keep and for how long.';
+const noticeHeading = noticeHeadingProp ?? 'Got it.';
+const noticeBody =
+  noticeBodyProp ??
+  "The full applicant portal isn't live yet, so the next step is an email from a real person on the committee. Most go out inside a week. If it's urgent, write";
+const urgentEmail = urgentEmailProp ?? 'grants@actionsportssafetyproject.com';
+const disciplineOptions = disciplineOptionsProp?.length
+  ? disciplineOptionsProp
+  : ['Skating', 'Mountain biking', 'Trail running', 'BMX', 'Snow / ski', 'Other'];
+const kindOptions = kindOptionsProp?.length
+  ? kindOptionsProp
+  : ['Course tuition', 'Protective gear', 'Injury recovery', 'Trail crew / event support'];
 ---
 
 <section class="give-form give-form--grant" id={id} aria-labelledby={`${id}-h`}>
   <div class="give-form__inner">
     <header class="give-form__head">
-      <p class="give-form__eyebrow" aria-hidden="true">Apply</p>
-      <h2 class="give-form__heading" id={`${id}-h`}>Apply for a grant</h2>
-      <p class="give-form__lede">
-        Tell us who you are, what you ride, and what happened. We read every one.
-        Most riders hear back inside a week.
-      </p>
-      <p class="give-form__required-note">All fields below are required.</p>
+      <p class="give-form__eyebrow" aria-hidden="true">{eyebrow}</p>
+      <h2 class="give-form__heading" id={`${id}-h`}>{heading}</h2>
+      <p class="give-form__lede">{lede}</p>
+      {requiredNote && <p class="give-form__required-note">{requiredNote}</p>}
     </header>
 
     <form class="give-form__form" data-give-form novalidate>
@@ -64,12 +107,7 @@ const { id = 'apply' } = Astro.props;
           <span class="give-form__label">Discipline</span>
           <select name="discipline" required aria-describedby="apply-discipline-err">
             <option value="">Select one</option>
-            <option>Skating</option>
-            <option>Mountain biking</option>
-            <option>Trail running</option>
-            <option>BMX</option>
-            <option>Snow / ski</option>
-            <option>Other</option>
+            {disciplineOptions.map((opt) => <option>{opt}</option>)}
           </select>
           <span class="give-form__error" id="apply-discipline-err" hidden></span>
         </label>
@@ -77,10 +115,7 @@ const { id = 'apply' } = Astro.props;
           <span class="give-form__label">Type of request</span>
           <select name="kind" required aria-describedby="apply-kind-err">
             <option value="">Select one</option>
-            <option>Course tuition</option>
-            <option>Protective gear</option>
-            <option>Injury recovery</option>
-            <option>Trail crew / event support</option>
+            {kindOptions.map((opt) => <option>{opt}</option>)}
           </select>
           <span class="give-form__error" id="apply-kind-err" hidden></span>
         </label>
@@ -99,21 +134,17 @@ const { id = 'apply' } = Astro.props;
       </label>
 
       <div class="give-form__actions">
-        <button type="submit" class="btn btn-primary">Send it in</button>
-        <p class="give-form__fineprint">
-          Applicant details stay with the review committee. The privacy policy
-          spells out exactly what we keep and for how long.
-        </p>
+        <button type="submit" class="btn btn-primary">{submitLabel}</button>
+        {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
       </div>
 
       <div class="give-form__notice" data-give-notice hidden role="status">
         <p>
-          <strong tabindex="-1">Got it.</strong>
-          The full applicant portal isn't live yet, so the next step is an email
-          from a real person on the committee. Most go out inside a week. If it's
-          urgent, write
-          <a href="mailto:grants@actionsportssafetyproject.com">grants@actionsportssafetyproject.com</a>
-          directly.
+          <strong tabindex="-1">{noticeHeading}</strong>
+          {noticeBody && <> {noticeBody}</>}
+          {urgentEmail && (
+            <> <a href={`mailto:${urgentEmail}`}>{urgentEmail}</a> directly.</>
+          )}
         </p>
       </div>
     </form>

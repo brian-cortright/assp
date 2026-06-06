@@ -7,7 +7,36 @@ import GrantForm from '../components/GrantForm.astro';
 import { client } from '../lib/sanity';
 import { grantsPageQuery } from '../lib/queries';
 
-const page = (await client.fetch(grantsPageQuery)) || {};
+interface NavItem { label: string; href: string }
+interface FormCopy {
+  eyebrow?: string; heading?: string; lede?: string; requiredNote?: string;
+  submitLabel?: string; fineprint?: string; noticeHeading?: string; noticeBody?: string;
+}
+interface PageHero { eyebrow?: string; title?: string; lede?: string }
+interface GrantsPage {
+  hero?: PageHero;
+  applyButtonLabel?: string;
+  tocHeading?: string;
+  tocLinks?: NavItem[];
+  body?: any[];
+  form?: FormCopy;
+  formDisciplineOptions?: string[];
+  formKindOptions?: string[];
+  formUrgentEmail?: string;
+  seo?: { title?: string; description?: string };
+}
+
+const page: GrantsPage = (await client.fetch<GrantsPage>(grantsPageQuery)) || {};
+
+const tocLinks: NavItem[] = page.tocLinks?.length
+  ? page.tocLinks
+  : [
+      { label: 'Eligibility', href: '#eligibility' },
+      { label: 'Approved courses', href: '#approved-courses' },
+      { label: 'Process', href: '#process' },
+      { label: 'Timeline', href: '#timeline' },
+      { label: 'Apply', href: '#apply' },
+    ];
 ---
 
 <Base title={page.seo?.title} description={page.seo?.description}>
@@ -23,7 +52,7 @@ const page = (await client.fetch(grantsPageQuery)) || {};
         <div>
           {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
           <p class="page-hero-actions">
-            <a href="#apply" class="btn btn-white">Apply for a grant</a>
+            <a href="#apply" class="btn btn-white">{page.applyButtonLabel ?? 'Apply for a grant'}</a>
           </p>
         </div>
       </div>
@@ -32,13 +61,11 @@ const page = (await client.fetch(grantsPageQuery)) || {};
     <section class="page-section">
       <div class="page-split">
         <aside class="page-aside">
-          <p class="page-aside__heading">How it works</p>
+          <p class="page-aside__heading">{page.tocHeading ?? 'How it works'}</p>
           <ul class="page-aside__list">
-            <li><a href="#eligibility">Eligibility</a></li>
-            <li><a href="#approved-courses">Approved courses</a></li>
-            <li><a href="#process">Process</a></li>
-            <li><a href="#timeline">Timeline</a></li>
-            <li><a href="#apply">Apply</a></li>
+            {tocLinks.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
           </ul>
         </aside>
 
@@ -48,7 +75,20 @@ const page = (await client.fetch(grantsPageQuery)) || {};
       </div>
     </section>
 
-    <GrantForm id="apply" />
+    <GrantForm
+      id="apply"
+      eyebrow={page.form?.eyebrow}
+      heading={page.form?.heading}
+      lede={page.form?.lede}
+      requiredNote={page.form?.requiredNote}
+      submitLabel={page.form?.submitLabel}
+      fineprint={page.form?.fineprint}
+      noticeHeading={page.form?.noticeHeading}
+      noticeBody={page.form?.noticeBody}
+      urgentEmail={page.formUrgentEmail}
+      disciplineOptions={page.formDisciplineOptions}
+      kindOptions={page.formKindOptions}
+    />
   </main>
 
   <Footer />

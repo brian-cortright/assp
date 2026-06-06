@@ -8,19 +8,40 @@ import { client } from '../lib/sanity';
 import { donatePageQuery } from '../lib/queries';
 
 interface PageHero { eyebrow?: string; title?: string; lede?: string }
+interface NavItem { label: string; href: string }
 interface ImpactRung { amount?: string; title?: string; body?: string }
+interface FormCopy {
+  eyebrow?: string; heading?: string; lede?: string; requiredNote?: string;
+  submitLabel?: string; fineprint?: string; noticeHeading?: string; noticeBody?: string;
+}
 interface DonatePage {
   hero?: PageHero;
+  heroPrimaryButtonLabel?: string;
+  heroSecondaryButtonLabel?: string;
   impactEyebrow?: string;
   impactHeadline?: string;
   impactSubheadline?: string;
   impactRungs?: ImpactRung[];
+  form?: FormCopy;
+  formTierAmounts?: number[];
+  formDefaultTierIndex?: number;
+  offlineTocHeading?: string;
+  offlineTocLinks?: NavItem[];
   howToGiveBody?: any[];
   disclaimer?: string;
   seo?: { title?: string; description?: string };
 }
 
 const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {};
+
+const offlineTocLinks: NavItem[] = page.offlineTocLinks?.length
+  ? page.offlineTocLinks
+  : [
+      { label: 'Online', href: '#online' },
+      { label: 'By check', href: '#by-check' },
+      { label: 'Stock or DAF', href: '#stock-or-donor-advised-fund' },
+      { label: 'Employer match', href: '#employer-match' },
+    ];
 ---
 
 <Base title={page.seo?.title} description={page.seo?.description}>
@@ -36,14 +57,26 @@ const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {}
         <div>
           {page.hero?.lede && <p class="page-hero-lede">{page.hero.lede}</p>}
           <p class="page-hero-actions">
-            <a href="#give" class="btn btn-white">Give now</a>
-            <a href="#offline" class="btn btn-outline">Other ways to give</a>
+            <a href="#give" class="btn btn-white">{page.heroPrimaryButtonLabel ?? 'Give now'}</a>
+            <a href="#offline" class="btn btn-outline">{page.heroSecondaryButtonLabel ?? 'Other ways to give'}</a>
           </p>
         </div>
       </div>
     </section>
 
-    <DonateForm id="give" />
+    <DonateForm
+      id="give"
+      eyebrow={page.form?.eyebrow}
+      heading={page.form?.heading}
+      lede={page.form?.lede}
+      requiredNote={page.form?.requiredNote}
+      submitLabel={page.form?.submitLabel}
+      fineprint={page.form?.fineprint}
+      noticeHeading={page.form?.noticeHeading}
+      noticeBody={page.form?.noticeBody}
+      tierAmounts={page.formTierAmounts}
+      defaultTierIndex={page.formDefaultTierIndex}
+    />
 
     {page.impactRungs && page.impactRungs.length > 0 && (
       <section class="impact" aria-labelledby="impact-h">
@@ -75,17 +108,16 @@ const page: DonatePage = (await client.fetch<DonatePage>(donatePageQuery)) || {}
     <section class="page-section page-section--dust" id="offline" aria-labelledby="offline-h">
       <div class="page-split">
         <aside class="page-aside">
-          <p class="page-aside__heading">Other ways to give</p>
+          <p class="page-aside__heading">{page.offlineTocHeading ?? 'Other ways to give'}</p>
           <ul class="page-aside__list">
-            <li><a href="#online">Online</a></li>
-            <li><a href="#check">By check</a></li>
-            <li><a href="#stock">Stock or DAF</a></li>
-            <li><a href="#match">Employer match</a></li>
+            {offlineTocLinks.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
           </ul>
         </aside>
 
         <div class="prose">
-          <h2 id="offline-h" class="visually-hidden">Other ways to give</h2>
+          <h2 id="offline-h" class="visually-hidden">{page.offlineTocHeading ?? 'Other ways to give'}</h2>
           <PortableText value={page.howToGiveBody} />
           {page.disclaimer && (
             <>

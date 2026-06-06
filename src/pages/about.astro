@@ -7,13 +7,17 @@ import { client } from '../lib/sanity';
 import { aboutPageQuery, boardMembersQuery } from '../lib/queries';
 
 interface BoardMember { name?: string; role?: string }
+interface NavItem { label: string; href: string }
 interface PageHero { eyebrow?: string; title?: string; lede?: string }
 interface AboutPage {
   hero?: PageHero;
+  tocHeading?: string;
+  tocLinks?: NavItem[];
   missionBody?: any[];
   originBody?: any[];
   valuesBody?: any[];
   governanceBody?: any[];
+  boardEyebrow?: string;
   boardHeadline?: string;
   boardSubheadline?: string;
   seo?: { title?: string; description?: string };
@@ -25,6 +29,16 @@ const [page, board] = (await Promise.all([
 ])) as [AboutPage | null, BoardMember[] | null];
 const p: AboutPage = page || {};
 const boardList: BoardMember[] = board || [];
+
+const tocLinks: NavItem[] = p.tocLinks?.length
+  ? p.tocLinks
+  : [
+      { label: 'Our mission', href: '#mission' },
+      { label: 'Origin', href: '#origin' },
+      { label: 'What we believe', href: '#values' },
+      { label: 'Governance', href: '#governance' },
+      { label: 'Board of directors', href: '#board' },
+    ];
 ---
 
 <Base title={p.seo?.title} description={p.seo?.description}>
@@ -44,13 +58,11 @@ const boardList: BoardMember[] = board || [];
     <section class="page-section">
       <div class="page-split">
         <aside class="page-aside" aria-label="On this page">
-          <p class="page-aside__heading">On this page</p>
+          <p class="page-aside__heading">{p.tocHeading ?? 'On this page'}</p>
           <ul class="page-aside__list">
-            <li><a href="#mission">Our mission</a></li>
-            <li><a href="#origin">Origin</a></li>
-            <li><a href="#values">What we believe</a></li>
-            <li><a href="#board">Board of directors</a></li>
-            <li><a href="#governance">Governance</a></li>
+            {tocLinks.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
           </ul>
         </aside>
 
@@ -74,7 +86,9 @@ const boardList: BoardMember[] = board || [];
       <section class="board" id="board" aria-labelledby="board-headline">
         <div class="board-inner">
           <div class="board-intro">
-            <p class="section-eyebrow" aria-hidden="true">Who we are</p>
+            {p.boardEyebrow !== '' && (
+              <p class="section-eyebrow" aria-hidden="true">{p.boardEyebrow ?? 'Who we are'}</p>
+            )}
             <h2 class="section-headline" id="board-headline">{p.boardHeadline ?? 'Board of directors'}</h2>
             {p.boardSubheadline && (
               <p class="section-sub section-sub--flush">{p.boardSubheadline}</p>

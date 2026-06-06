@@ -43,6 +43,19 @@ export const homePage = defineType({
         "band immediately below the Pine hero, before the Problem section. Omit and the " +
         "band is hidden; hero flows straight into Problem.",
     }),
+    defineField({
+      name: "heroTocIndex",
+      title: "Hero TOC Index",
+      type: "string",
+      description: 'Numeric index shown beside the hero in-page TOC (e.g. "01").',
+    }),
+    defineField({
+      name: "heroTocLinks",
+      title: "Hero TOC Links",
+      type: "array",
+      of: [{ type: "navItem" }],
+      description: "In-page jump links shown in the hero footer (Problem · Programs · Impact · Donate).",
+    }),
 
     // Problem section
     defineField({

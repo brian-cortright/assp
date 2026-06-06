@@ -11,6 +11,18 @@ export const donatePage = defineType({
       type: 'pageHero',
     }),
     defineField({
+      name: 'heroPrimaryButtonLabel',
+      title: 'Hero — Primary button label',
+      type: 'string',
+      description: 'Anchors to the donate form. Defaults to "Give now".',
+    }),
+    defineField({
+      name: 'heroSecondaryButtonLabel',
+      title: 'Hero — Secondary button label',
+      type: 'string',
+      description: 'Anchors to "Other ways to give". Defaults to "Other ways to give".',
+    }),
+    defineField({
       name: 'impactEyebrow',
       title: 'Impact Eyebrow',
       type: 'string',
@@ -31,6 +43,37 @@ export const donatePage = defineType({
       title: 'Impact Ladder',
       type: 'array',
       of: [{type: 'impactRung'}],
+    }),
+    defineField({
+      name: 'form',
+      title: 'Donate form copy',
+      type: 'formCopy',
+    }),
+    defineField({
+      name: 'formTierAmounts',
+      title: 'Form — Tier amounts (USD)',
+      type: 'array',
+      of: [{type: 'number'}],
+      description: 'Preset donation amounts shown as pill buttons.',
+    }),
+    defineField({
+      name: 'formDefaultTierIndex',
+      title: 'Form — Default tier index',
+      type: 'number',
+      description: 'Zero-based index of the tier preselected on load. Defaults to 1 (second tier).',
+    }),
+    defineField({
+      name: 'offlineTocHeading',
+      title: 'Offline — TOC heading',
+      type: 'string',
+      description: 'Defaults to "Other ways to give".',
+    }),
+    defineField({
+      name: 'offlineTocLinks',
+      title: 'Offline — TOC links',
+      type: 'array',
+      of: [{type: 'navItem'}],
+      description: 'Anchors must match h3 ids in How to give (#online, #check, #stock, #match).',
     }),
     defineField({
       name: 'howToGiveBody',

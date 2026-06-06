@@ -18,13 +18,6 @@ export const boardMember = defineType({
       description: 'e.g. "Founder", "Board Director"',
     }),
     defineField({
-      name: 'initials',
-      title: 'Initials',
-      type: 'string',
-      description: 'Two-letter initials for the monogram circle (e.g. "BC", "AG").',
-      validation: (rule) => rule.max(3),
-    }),
-    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',

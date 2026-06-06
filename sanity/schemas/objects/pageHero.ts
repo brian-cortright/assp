@@ -26,14 +26,5 @@ export const pageHero = defineType({
       rows: 3,
       description: "Brief intro paragraph displayed beside the title.",
     }),
-    defineField({
-      name: "image",
-      title: "Hero Photo",
-      type: "editorialImage",
-      description:
-        "Optional. Landscape 3:2 preferred. Place or terrain (trails, pump tracks, " +
-        "parking lots, mountains). People-at-rest acceptable if the framing is landscape. " +
-        "Renders as a full-bleed band below the hero copy. Omit and the band is hidden.",
-    }),
   ],
 });

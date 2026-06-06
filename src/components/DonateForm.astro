@@ -31,15 +31,49 @@ interface Props {
   submitLabel?: string;
   /** Anchor id (used by sidebar TOCs and skip-links). */
   id?: string;
+  /** Small mono note under the lede (e.g. required-fields summary). */
+  requiredNote?: string;
+  /** Fineprint shown beside the submit button. */
+  fineprint?: string;
+  /** Post-submit notice heading (inside <strong>). */
+  noticeHeading?: string;
+  /** Post-submit notice body paragraph. */
+  noticeBody?: string;
+  /** Tier amounts (USD) shown as preset pills. */
+  tierAmounts?: number[];
+  /** Zero-based index of the tier preselected on load. */
+  defaultTierIndex?: number;
 }
 
 const {
-  heading = 'Give now',
-  eyebrow = 'Donate',
-  lede = "Pick a number that means something to you. Leave your name and email. The online processor isn't wired up yet; when it is, you'll be first in line. Until then, the offline routes are below.",
-  submitLabel = 'Hold my spot',
+  heading: headingProp,
+  eyebrow: eyebrowProp,
+  lede: ledeProp,
+  submitLabel: submitLabelProp,
   id = 'give',
+  requiredNote: requiredNoteProp,
+  fineprint: fineprintProp,
+  noticeHeading: noticeHeadingProp,
+  noticeBody: noticeBodyProp,
+  tierAmounts: tierAmountsProp,
+  defaultTierIndex: defaultTierIndexProp,
 } = Astro.props;
+
+const heading = headingProp ?? 'Give now';
+const eyebrow = eyebrowProp ?? 'Donate';
+const lede =
+  ledeProp ??
+  "Pick a number that means something to you. Leave your name and email. The online processor isn't wired up yet; when it is, you'll be first in line. Until then, the offline routes are below.";
+const submitLabel = submitLabelProp ?? 'Hold my spot';
+const requiredNote = requiredNoteProp ?? 'Name, email, and an amount are required.';
+const fineprint =
+  fineprintProp ?? 'Tax-deductible to the extent permitted by law. EIN on request, no form to fill out.';
+const noticeHeading = noticeHeadingProp ?? "We've got you down.";
+const noticeBody =
+  noticeBodyProp ??
+  "Online giving isn't live yet. The day it ships, you'll get an email with the link. Want to give by check, stock, or DAF in the meantime? The instructions are just below.";
+const tierAmounts = tierAmountsProp?.length ? tierAmountsProp : [25, 50, 100, 250, 500];
+const defaultTierIndex = defaultTierIndexProp ?? 1;
 ---
 
 <section class="give-form" id={id} aria-labelledby={`${id}-h`}>
@@ -48,20 +82,20 @@ const {
       <p class="give-form__eyebrow" aria-hidden="true">{eyebrow}</p>
       <h2 class="give-form__heading" id={`${id}-h`}>{heading}</h2>
       <p class="give-form__lede">{lede}</p>
-      <p class="give-form__required-note">Name, email, and an amount are required.</p>
+      {requiredNote && <p class="give-form__required-note">{requiredNote}</p>}
     </header>
 
     <form class="give-form__form" data-give-form novalidate>
       <fieldset class="give-form__field give-form__field--tiers">
         <legend class="give-form__label">Amount</legend>
         <div class="give-form__tiers" role="radiogroup" aria-label="Donation amount">
-          {[25, 50, 100, 250, 500].map((amount, i) => (
+          {tierAmounts.map((amount, i) => (
             <label class="give-form__tier">
               <input
                 type="radio"
                 name="amount"
                 value={String(amount)}
-                checked={i === 1}
+                checked={i === defaultTierIndex}
               />
               <span>${amount}</span>
             </label>
@@ -117,17 +151,13 @@ const {
 
       <div class="give-form__actions">
         <button type="submit" class="btn btn-primary">{submitLabel}</button>
-        <p class="give-form__fineprint">
-          Tax-deductible to the extent permitted by law. EIN on request, no form to fill out.
-        </p>
+        {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
       </div>
 
       <div class="give-form__notice" data-give-notice hidden role="status">
         <p>
-          <strong tabindex="-1">We've got you down.</strong>
-          Online giving isn't live yet. The day it ships, you'll get an email with the link.
-          Want to give by check, stock, or DAF in the meantime? The instructions are
-          just below.
+          <strong tabindex="-1">{noticeHeading}</strong>
+          {noticeBody && <> {noticeBody}</>}
         </p>
       </div>
     </form>

@@ -121,6 +121,28 @@ const siteSettings = {
   ]),
   footerDescription:
     "Life-saving education for the action sports community. Tuition grants for medical certifications. Emergency response training at community events.",
+  footerSiteHeading: "Site",
+  footerSiteLinks: keyed([
+    { _type: "navItem", label: "Home", href: "/" },
+    { _type: "navItem", label: "About", href: "/about" },
+    { _type: "navItem", label: "Programs", href: "/programs" },
+    { _type: "navItem", label: "Donate", href: "/donate" },
+    { _type: "navItem", label: "Grant Submissions", href: "/grants" },
+    { _type: "navItem", label: "Contact", href: "/contact" },
+  ]),
+  footerLegalHeading: "Legal",
+  footerLegalLinks: keyed([
+    { _type: "navItem", label: "Terms of Use", href: "/terms" },
+    { _type: "navItem", label: "Privacy Policy", href: "/privacy" },
+    { _type: "navItem", label: "State Disclosures", href: "/disclosures" },
+    {
+      _type: "navItem",
+      label: "info@actionsportssafetyproject.com",
+      href: "mailto:info@actionsportssafetyproject.com",
+    },
+  ]),
+  footerLegalDisclaimer:
+    "Donations are tax-deductible to the extent permitted by law. No goods or services are provided in exchange for charitable contributions.",
   seo: {
     _type: "seo",
     title: "Action Sports Safety Project",
@@ -136,35 +158,30 @@ const boardMembers = [
     _id: "boardMember.brian",
     name: "Brian Cortright",
     role: "Founder",
-    initials: "BC",
     order: 1,
   },
   {
     _id: "boardMember.amy",
     name: "Amy Ginn",
     role: "Board Director",
-    initials: "AG",
     order: 2,
   },
   {
     _id: "boardMember.alex",
     name: "Alex George",
     role: "Board Director",
-    initials: "AG",
     order: 3,
   },
   {
     _id: "boardMember.max",
     name: "Max Dubler",
     role: "Board Director",
-    initials: "MD",
     order: 4,
   },
   {
     _id: "boardMember.terry",
     name: "Terry Welliver",
     role: "Board Director",
-    initials: "TW",
     order: 5,
   },
 ].map((m) => ({ ...m, _type: "boardMember" }));
@@ -274,6 +291,13 @@ const homePage = {
     variant: "outline",
     external: false,
   },
+  heroTocIndex: "01",
+  heroTocLinks: keyed([
+    { _type: "navItem", label: "Problem", href: "#problem" },
+    { _type: "navItem", label: "Programs", href: "#programs" },
+    { _type: "navItem", label: "Impact", href: "#impact" },
+    { _type: "navItem", label: "Donate", href: "#donate" },
+  ]),
 
   problemHeadline: "Action sports happen far from the people trained to help.",
   problemBodyParagraphs: [
@@ -368,6 +392,14 @@ const aboutPage = {
     title: "Built by the people the work serves.",
     lede: "Action Sports Safety Project is a 501(c)(3) public benefit corporation founded in California in 2024. We exist for one reason: to make sure the person nearest a serious injury knows what to do.",
   },
+  tocHeading: "On this page",
+  tocLinks: keyed([
+    { _type: "navItem", label: "Our mission", href: "#mission" },
+    { _type: "navItem", label: "Origin", href: "#origin" },
+    { _type: "navItem", label: "What we believe", href: "#values" },
+    { _type: "navItem", label: "Governance", href: "#governance" },
+    { _type: "navItem", label: "Board of directors", href: "#board" },
+  ]),
   missionBody: [
     p(
       "We fund tuition grants for medical certifications and run on-site response training at action sports community events. Every grant and every clinic targets the same outcome: a trained first responder closer to the next preventable tragedy.",
@@ -423,6 +455,10 @@ const aboutPage = {
       "Our board serves without compensation. No officer, director, or family member receives salary, contractor payments, or grants from the organization.",
     ),
   ],
+  boardEyebrow: "Who we are",
+  boardHeadline: "Built by people who know the sports and the medicine.",
+  boardSubheadline:
+    "Our founding board pairs lifelong action sports practitioners with working medical professionals. Every grant decision and every event runs through people who have spent decades in both worlds.",
   seo: {
     _type: "seo",
     title: "About — Action Sports Safety Project",
@@ -519,6 +555,15 @@ const grantsPage = {
     title: "Apply for a tuition grant.",
     lede: "We pay the full tuition for approved medical certification courses, directly to the training provider. Athletes, coaches, park staff, and event organizers in the action sports community are eligible.",
   },
+  applyButtonLabel: "Apply for a grant",
+  tocHeading: "How it works",
+  tocLinks: keyed([
+    { _type: "navItem", label: "Eligibility", href: "#eligibility" },
+    { _type: "navItem", label: "Approved courses", href: "#approved-courses" },
+    { _type: "navItem", label: "Process", href: "#process" },
+    { _type: "navItem", label: "Timeline", href: "#timeline" },
+    { _type: "navItem", label: "Apply", href: "#apply" },
+  ]),
   body: [
     h2("Eligibility"),
     p("You are eligible if you can answer yes to all three:"),
@@ -586,11 +631,34 @@ const grantsPage = {
       'We respond to every email within five business days, even if our reply is "we need more information."',
     ),
   ],
-  approvedCourses: certifications.map((c) => ({
-    _key: k(),
-    _type: "reference",
-    _ref: c._id,
-  })),
+  form: {
+    _type: "formCopy",
+    eyebrow: "Apply",
+    heading: "Apply for a grant",
+    lede: "Tell us who you are, what you ride, and what happened. We read every one. Most riders hear back inside a week.",
+    requiredNote: "All fields below are required.",
+    submitLabel: "Send it in",
+    fineprint:
+      "Applicant details stay with the review committee. The privacy policy spells out exactly what we keep and for how long.",
+    noticeHeading: "Got it.",
+    noticeBody:
+      "The full applicant portal isn't live yet, so the next step is an email from a real person on the committee. Most go out inside a week. If it's urgent, write",
+  },
+  formDisciplineOptions: [
+    "Skating",
+    "Mountain biking",
+    "Trail running",
+    "BMX",
+    "Snow / ski",
+    "Other",
+  ],
+  formKindOptions: [
+    "Course tuition",
+    "Protective gear",
+    "Injury recovery",
+    "Trail crew / event support",
+  ],
+  formUrgentEmail: "grants@actionsportssafetyproject.com",
   seo: {
     _type: "seo",
     title: "Grant Submissions — Action Sports Safety Project",
@@ -610,11 +678,35 @@ const donatePage = {
     title: "Every gift lands on a tuition invoice.",
     lede: "Donations fund medical certifications and on-site training clinics, paid directly to the training providers. We are an all-volunteer board. No salaries are paid from donations.",
   },
+  heroPrimaryButtonLabel: "Give now",
+  heroSecondaryButtonLabel: "Other ways to give",
   impactEyebrow: "Where your gift goes",
   impactHeadline: "Fixed unit costs. No mystery overhead.",
   impactSubheadline:
     "Every grant and every clinic has a known dollar figure. Your donation moves to the next available slot at that price.",
   impactRungs,
+  form: {
+    _type: "formCopy",
+    eyebrow: "Donate",
+    heading: "Give now",
+    lede: "Pick a number that means something to you. Leave your name and email. The online processor isn't wired up yet; when it is, you'll be first in line. Until then, the offline routes are below.",
+    requiredNote: "Name, email, and an amount are required.",
+    submitLabel: "Hold my spot",
+    fineprint:
+      "Tax-deductible to the extent permitted by law. EIN on request, no form to fill out.",
+    noticeHeading: "We've got you down.",
+    noticeBody:
+      "Online giving isn't live yet. The day it ships, you'll get an email with the link. Want to give by check, stock, or DAF in the meantime? The instructions are just below.",
+  },
+  formTierAmounts: [25, 50, 100, 250, 500],
+  formDefaultTierIndex: 1,
+  offlineTocHeading: "Other ways to give",
+  offlineTocLinks: keyed([
+    { _type: "navItem", label: "Online", href: "#online" },
+    { _type: "navItem", label: "By check", href: "#by-check" },
+    { _type: "navItem", label: "Stock or DAF", href: "#stock-or-donor-advised-fund" },
+    { _type: "navItem", label: "Employer match", href: "#employer-match" },
+  ]),
   howToGiveBody: [
     h2("How to give"),
     h3("Online"),

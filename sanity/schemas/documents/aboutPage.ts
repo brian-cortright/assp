@@ -11,6 +11,19 @@ export const aboutPage = defineType({
       type: "pageHero",
     }),
     defineField({
+      name: "tocHeading",
+      title: "In-page TOC heading",
+      type: "string",
+      description: 'Defaults to "On this page".',
+    }),
+    defineField({
+      name: "tocLinks",
+      title: "In-page TOC links",
+      type: "array",
+      of: [{ type: "navItem" }],
+      description: "Sidebar links. Anchors must match the section ids on the page (#mission, #origin, #values, #governance, #board).",
+    }),
+    defineField({
       name: "missionBody",
       title: "Our Mission",
       type: "array",
@@ -34,6 +47,12 @@ export const aboutPage = defineType({
       title: "Governance",
       type: "array",
       of: [{ type: "block" }],
+    }),
+    defineField({
+      name: "boardEyebrow",
+      title: "Board Eyebrow",
+      type: "string",
+      description: 'Mono kicker above the board headline. Defaults to "Who we are".',
     }),
     defineField({
       name: "boardHeadline",
