@@ -704,7 +704,11 @@ const donatePage = {
   offlineTocLinks: keyed([
     { _type: "navItem", label: "Online", href: "#online" },
     { _type: "navItem", label: "By check", href: "#by-check" },
-    { _type: "navItem", label: "Stock or DAF", href: "#stock-or-donor-advised-fund" },
+    {
+      _type: "navItem",
+      label: "Stock or DAF",
+      href: "#stock-or-donor-advised-fund",
+    },
     { _type: "navItem", label: "Employer match", href: "#employer-match" },
   ]),
   howToGiveBody: [
@@ -768,41 +772,19 @@ const contactPage = {
   channels: keyed([
     {
       _type: "contactChannel",
-      label: "General",
-      value: "info@actionsportssafetyproject.com",
-      href: "mailto:info@actionsportssafetyproject.com",
+      label: "Email",
+      value: "info@actionsportssafetyproject.org",
+      href: "mailto:info@actionsportssafetyproject.org",
     },
     {
       _type: "contactChannel",
-      label: "Grant questions",
-      value: "grants@actionsportssafetyproject.com",
-      href: "mailto:grants@actionsportssafetyproject.com",
-    },
-    {
-      _type: "contactChannel",
-      label: "Donations",
-      value: "donate@actionsportssafetyproject.com",
-      href: "mailto:donate@actionsportssafetyproject.com",
-    },
-    {
-      _type: "contactChannel",
-      label: "On-site clinic requests",
-      value: "clinics@actionsportssafetyproject.com",
-      href: "mailto:clinics@actionsportssafetyproject.com",
-    },
-    {
-      _type: "contactChannel",
-      label: "Press",
-      value: "press@actionsportssafetyproject.com",
-      href: "mailto:press@actionsportssafetyproject.com",
-    },
-    {
-      _type: "contactChannel",
-      label: "Mailing address",
-      value: "Available upon request",
-      href: "",
+      label: "Instagram",
+      value: "@actionsportssafetyproject",
+      href: "https://instagram.com/actionsportssafetyproject",
     },
   ]),
+  formUrl:
+    "https://docs.google.com/forms/d/e/1FAIpQLSc6VaGaErTfyocvKYHJxUSuiH_G9sBiecgzvQtCrjfozNe-tQ/viewform?usp=publish-editor",
   faq: keyed([
     {
       _type: "faqItem",

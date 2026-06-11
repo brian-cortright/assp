@@ -11,11 +11,25 @@ interface FaqItem { question?: string; answer?: string }
 interface ContactPage {
   hero?: PageHero;
   channels?: ContactChannel[];
+  formUrl?: string;
+  formHeight?: number;
   faq?: FaqItem[];
   seo?: { title?: string; description?: string };
 }
 
 const page: ContactPage = (await client.fetch<ContactPage>(contactPageQuery)) || {};
+
+let contactEmbedSrc: string | null = null;
+if (page.formUrl) {
+  try {
+    const u = new URL(page.formUrl);
+    u.searchParams.set('embedded', 'true');
+    contactEmbedSrc = u.toString();
+  } catch {
+    contactEmbedSrc = page.formUrl;
+  }
+}
+const contactEmbedHeight = page.formHeight ?? 1500;
 
 function slugify(s: string): string {
   return s
@@ -56,6 +70,23 @@ function slugify(s: string): string {
               </div>
             ))}
           </dl>
+        )}
+
+        {contactEmbedSrc && (
+          <div class="contact-form-embed">
+            <iframe
+              src={contactEmbedSrc}
+              title="Contact form"
+              loading="lazy"
+              width="100%"
+              height={contactEmbedHeight}
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+            >
+              Loading the contact form…
+            </iframe>
+          </div>
         )}
 
         {page.faq && page.faq.length > 0 && (

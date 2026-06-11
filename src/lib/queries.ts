@@ -136,6 +136,8 @@ export const donatePageQuery = `*[_type == "donatePage"][0] {
 export const contactPageQuery = `*[_type == "contactPage"][0] {
   hero { eyebrow, title, lede },
   channels[] { label, value, href },
+  formUrl,
+  formHeight,
   faq[] { question, answer },
   seo { title, description }
 }`;
