@@ -109,11 +109,8 @@ export const grantsPageQuery = `*[_type == "grantsPage"][0] {
   tocHeading,
   tocLinks[] { label, href },
   body,
-  form { eyebrow, heading, lede, requiredNote, submitLabel, fineprint, noticeHeading, noticeBody },
+  form { eyebrow, heading, lede, requiredNote, fineprint },
   formUrl,
-  formDisciplineOptions,
-  formKindOptions,
-  formUrgentEmail,
   seo { title, description }
 }`;
 
@@ -126,10 +123,8 @@ export const donatePageQuery = `*[_type == "donatePage"][0] {
   impactHeadline,
   impactSubheadline,
   impactRungs[] { amount, title, body, image { asset, alt } },
-  form { eyebrow, heading, lede, requiredNote, submitLabel, fineprint, noticeHeading, noticeBody },
+  form { eyebrow, heading, lede, requiredNote, fineprint },
   formUrl,
-  formTierAmounts,
-  formDefaultTierIndex,
   offlineTocHeading,
   offlineTocLinks[] { label, href },
   howToGiveBody,

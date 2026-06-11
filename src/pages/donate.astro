@@ -12,7 +12,7 @@ interface NavItem { label: string; href: string }
 interface ImpactRung { amount?: string; title?: string; body?: string }
 interface FormCopy {
   eyebrow?: string; heading?: string; lede?: string; requiredNote?: string;
-  submitLabel?: string; fineprint?: string; noticeHeading?: string; noticeBody?: string;
+  fineprint?: string;
 }
 interface DonatePage {
   hero?: PageHero;
@@ -24,8 +24,6 @@ interface DonatePage {
   impactRungs?: ImpactRung[];
   form?: FormCopy;
   formUrl?: string;
-  formTierAmounts?: number[];
-  formDefaultTierIndex?: number;
   offlineTocHeading?: string;
   offlineTocLinks?: NavItem[];
   howToGiveBody?: any[];

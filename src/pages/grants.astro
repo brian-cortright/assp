@@ -10,7 +10,7 @@ import { grantsPageQuery } from '../lib/queries';
 interface NavItem { label: string; href: string }
 interface FormCopy {
   eyebrow?: string; heading?: string; lede?: string; requiredNote?: string;
-  submitLabel?: string; fineprint?: string; noticeHeading?: string; noticeBody?: string;
+  fineprint?: string;
 }
 interface PageHero { eyebrow?: string; title?: string; lede?: string }
 interface GrantsPage {
@@ -21,9 +21,6 @@ interface GrantsPage {
   body?: any[];
   form?: FormCopy;
   formUrl?: string;
-  formDisciplineOptions?: string[];
-  formKindOptions?: string[];
-  formUrgentEmail?: string;
   seo?: { title?: string; description?: string };
 }
 

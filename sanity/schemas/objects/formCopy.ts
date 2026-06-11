@@ -34,13 +34,8 @@ export const formCopy = defineType({
       name: "requiredNote",
       title: "Required-fields note",
       type: "string",
-      description: 'Small line under the lede (e.g. "All fields below are required.").',
-    }),
-    defineField({
-      name: "submitLabel",
-      title: "Submit button label",
-      type: "string",
-      validation: (rule) => rule.required(),
+      description:
+        'Small line under the lede (e.g. "All fields below are required.").',
     }),
     defineField({
       name: "fineprint",
@@ -48,18 +43,6 @@ export const formCopy = defineType({
       type: "text",
       rows: 2,
       description: "Small note next to / under the submit button.",
-    }),
-    defineField({
-      name: "noticeHeading",
-      title: "Post-submit notice heading",
-      type: "string",
-      description: "Shown after successful submit.",
-    }),
-    defineField({
-      name: "noticeBody",
-      title: "Post-submit notice body",
-      type: "text",
-      rows: 4,
     }),
   ],
 });

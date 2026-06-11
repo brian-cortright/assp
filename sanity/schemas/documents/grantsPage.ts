@@ -58,27 +58,6 @@ export const grantsPage = defineType({
         }),
     }),
     defineField({
-      name: "formDisciplineOptions",
-      title: "Form — Discipline options",
-      type: "array",
-      of: [{ type: "string" }],
-      description: 'Dropdown options for the "Discipline" field.',
-    }),
-    defineField({
-      name: "formKindOptions",
-      title: "Form — Request kind options",
-      type: "array",
-      of: [{ type: "string" }],
-      description: 'Dropdown options for the "Type of request" field.',
-    }),
-    defineField({
-      name: "formUrgentEmail",
-      title: "Form — Urgent contact email",
-      type: "string",
-      description:
-        "Linked from the post-submit notice (e.g. grants@actionsportssafetyproject.com).",
-    }),
-    defineField({
       name: "seo",
       title: "Page SEO",
       type: "seo",

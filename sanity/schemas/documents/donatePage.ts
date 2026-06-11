@@ -65,20 +65,6 @@ export const donatePage = defineType({
         }),
     }),
     defineField({
-      name: "formTierAmounts",
-      title: "Form — Tier amounts (USD)",
-      type: "array",
-      of: [{ type: "number" }],
-      description: "Preset donation amounts shown as pill buttons.",
-    }),
-    defineField({
-      name: "formDefaultTierIndex",
-      title: "Form — Default tier index",
-      type: "number",
-      description:
-        "Zero-based index of the tier preselected on load. Defaults to 1 (second tier).",
-    }),
-    defineField({
       name: "offlineTocHeading",
       title: "Offline — TOC heading",
       type: "string",
