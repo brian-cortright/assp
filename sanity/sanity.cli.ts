@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: "e6xp59xw",
     dataset: "production",
   },
+  studioHost: "assp",
 });

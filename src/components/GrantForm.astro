@@ -1,18 +1,11 @@
 ---
 /**
- * Placeholder grant-request form. Captures intent (rider name, sport, brief
- * narrative) and shows an inline notice on submit. Backend / email handler
- * lands later; for now the form is the affordance + a tasteful placeholder
- * acknowledgement so riders don't bounce because there's no button.
+ * Grant application embed. The intake itself lives in a Google Form; this
+ * component renders the page chrome (eyebrow / heading / lede) followed by
+ * the embedded form so applicants don't leave the site.
  *
- * One Clay primary CTA per page; this form's submit is the page's primary.
- *
- * Accessibility contract (mirrors DonateForm):
- *   - Required inputs have inline error spans wired via aria-describedby.
- *   - On invalid submit: populate errors with validationMessage, set
- *     aria-invalid, focus first invalid.
- *   - On valid submit: focus the notice <strong> (tabindex="-1") so the
- *     announcement is guaranteed, not heuristic.
+ * The embed URL is sourced from Sanity (grantsPage.formUrl). We force
+ * `embedded=true` so Google strips its own header chrome.
  */
 
 interface Props {
@@ -21,13 +14,9 @@ interface Props {
   heading?: string;
   lede?: string;
   requiredNote?: string;
-  submitLabel?: string;
   fineprint?: string;
-  noticeHeading?: string;
-  noticeBody?: string;
-  urgentEmail?: string;
-  disciplineOptions?: string[];
-  kindOptions?: string[];
+  formUrl?: string;
+  formHeight?: number;
 }
 const {
   id = 'apply',
@@ -35,13 +24,9 @@ const {
   heading: headingProp,
   lede: ledeProp,
   requiredNote: requiredNoteProp,
-  submitLabel: submitLabelProp,
   fineprint: fineprintProp,
-  noticeHeading: noticeHeadingProp,
-  noticeBody: noticeBodyProp,
-  urgentEmail: urgentEmailProp,
-  disciplineOptions: disciplineOptionsProp,
-  kindOptions: kindOptionsProp,
+  formUrl,
+  formHeight = 1900,
 } = Astro.props;
 
 const eyebrow = eyebrowProp ?? 'Apply';
@@ -50,21 +35,20 @@ const lede =
   ledeProp ??
   'Tell us who you are, what you ride, and what happened. We read every one. Most riders hear back inside a week.';
 const requiredNote = requiredNoteProp ?? 'All fields below are required.';
-const submitLabel = submitLabelProp ?? 'Send it in';
 const fineprint =
   fineprintProp ??
   'Applicant details stay with the review committee. The privacy policy spells out exactly what we keep and for how long.';
-const noticeHeading = noticeHeadingProp ?? 'Got it.';
-const noticeBody =
-  noticeBodyProp ??
-  "The full applicant portal isn't live yet, so the next step is an email from a real person on the committee. Most go out inside a week. If it's urgent, write";
-const urgentEmail = urgentEmailProp ?? 'grants@actionsportssafetyproject.com';
-const disciplineOptions = disciplineOptionsProp?.length
-  ? disciplineOptionsProp
-  : ['Skating', 'Mountain biking', 'Trail running', 'BMX', 'Snow / ski', 'Other'];
-const kindOptions = kindOptionsProp?.length
-  ? kindOptionsProp
-  : ['Course tuition', 'Protective gear', 'Injury recovery', 'Trail crew / event support'];
+
+let embedSrc: string | null = null;
+if (formUrl) {
+  try {
+    const u = new URL(formUrl);
+    u.searchParams.set('embedded', 'true');
+    embedSrc = u.toString();
+  } catch {
+    embedSrc = formUrl;
+  }
+}
 ---
 
 <section class="give-form give-form--grant" id={id} aria-labelledby={`${id}-h`}>
@@ -76,148 +60,40 @@ const kindOptions = kindOptionsProp?.length
       {requiredNote && <p class="give-form__required-note">{requiredNote}</p>}
     </header>
 
-    <form class="give-form__form" data-give-form novalidate>
-      <div class="give-form__row">
-        <label class="give-form__field">
-          <span class="give-form__label">Your name</span>
-          <input
-            type="text"
-            name="name"
-            autocomplete="name"
-            required
-            aria-describedby="apply-name-err"
-          />
-          <span class="give-form__error" id="apply-name-err" hidden></span>
-        </label>
-        <label class="give-form__field">
-          <span class="give-form__label">Email</span>
-          <input
-            type="email"
-            name="email"
-            autocomplete="email"
-            required
-            aria-describedby="apply-email-err"
-          />
-          <span class="give-form__error" id="apply-email-err" hidden></span>
-        </label>
+    {embedSrc ? (
+      <div class="give-form__embed">
+        <iframe
+          src={embedSrc}
+          title={heading}
+          loading="lazy"
+          width="100%"
+          height={formHeight}
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+        >
+          Loading the application form…
+        </iframe>
       </div>
+    ) : (
+      <p class="give-form__lede">
+        The application form is being set up. Check back shortly.
+      </p>
+    )}
 
-      <div class="give-form__row">
-        <label class="give-form__field">
-          <span class="give-form__label">Discipline</span>
-          <select name="discipline" required aria-describedby="apply-discipline-err">
-            <option value="">Select one</option>
-            {disciplineOptions.map((opt) => <option>{opt}</option>)}
-          </select>
-          <span class="give-form__error" id="apply-discipline-err" hidden></span>
-        </label>
-        <label class="give-form__field">
-          <span class="give-form__label">Type of request</span>
-          <select name="kind" required aria-describedby="apply-kind-err">
-            <option value="">Select one</option>
-            {kindOptions.map((opt) => <option>{opt}</option>)}
-          </select>
-          <span class="give-form__error" id="apply-kind-err" hidden></span>
-        </label>
-      </div>
-
-      <label class="give-form__field">
-        <span class="give-form__label">What happened, and what you need</span>
-        <textarea
-          name="story"
-          rows="5"
-          required
-          aria-describedby="apply-story-err"
-          placeholder="A few sentences is plenty. Specifics help: the discipline, the injury or gear gap, the course or item, what timing looks like."
-        ></textarea>
-        <span class="give-form__error" id="apply-story-err" hidden></span>
-      </label>
-
-      <div class="give-form__actions">
-        <button type="submit" class="btn btn-primary">{submitLabel}</button>
-        {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
-      </div>
-
-      <div class="give-form__notice" data-give-notice hidden role="status">
-        <p>
-          <strong tabindex="-1">{noticeHeading}</strong>
-          {noticeBody && <> {noticeBody}</>}
-          {urgentEmail && (
-            <> <a href={`mailto:${urgentEmail}`}>{urgentEmail}</a> directly.</>
-          )}
-        </p>
-      </div>
-    </form>
+    {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
   </div>
 </section>
 
-<script>
-  document.querySelectorAll('.give-form--grant [data-give-form]').forEach((formEl) => {
-    const form = formEl as HTMLFormElement;
-    const notice = form.querySelector<HTMLElement>('[data-give-notice]');
-    const noticeHeading = notice?.querySelector<HTMLElement>('strong');
-
-    const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      const describedBy = input.getAttribute('aria-describedby');
-      if (!describedBy) return;
-      const errEl = document.getElementById(describedBy);
-      if (!errEl) return;
-      errEl.textContent = input.validationMessage;
-      errEl.hidden = false;
-      input.setAttribute('aria-invalid', 'true');
-    };
-    const clearError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      const describedBy = input.getAttribute('aria-describedby');
-      if (describedBy) {
-        const errEl = document.getElementById(describedBy);
-        if (errEl) {
-          errEl.hidden = true;
-          errEl.textContent = '';
-        }
-      }
-      input.removeAttribute('aria-invalid');
-    };
-
-    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-      'input[aria-describedby], textarea[aria-describedby], select[aria-describedby]'
-    ).forEach((input) => {
-      const handler = () => {
-        if (input.checkValidity()) clearError(input);
-      };
-      input.addEventListener('input', handler);
-      input.addEventListener('change', handler);
-    });
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-        '[aria-invalid="true"]'
-      ).forEach(clearError);
-
-      if (!form.checkValidity()) {
-        const invalids = Array.from(
-          form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-            ':invalid'
-          )
-        ).filter((el) => el.hasAttribute('aria-describedby'));
-        invalids.forEach(showError);
-        invalids[0]?.focus();
-        return;
-      }
-
-      if (notice) notice.hidden = false;
-      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement>(
-        'input, textarea, select, button'
-      ).forEach((el) => {
-        el.disabled = true;
-      });
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      notice?.scrollIntoView({
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'nearest',
-      });
-      noticeHeading?.focus({ preventScroll: true });
-    });
-  });
-</script>
+<style>
+  .give-form__embed {
+    width: 100%;
+  }
+  .give-form__embed iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fff;
+  }
+</style>

@@ -23,6 +23,7 @@ interface DonatePage {
   impactSubheadline?: string;
   impactRungs?: ImpactRung[];
   form?: FormCopy;
+  formUrl?: string;
   formTierAmounts?: number[];
   formDefaultTierIndex?: number;
   offlineTocHeading?: string;
@@ -70,12 +71,8 @@ const offlineTocLinks: NavItem[] = page.offlineTocLinks?.length
       heading={page.form?.heading}
       lede={page.form?.lede}
       requiredNote={page.form?.requiredNote}
-      submitLabel={page.form?.submitLabel}
       fineprint={page.form?.fineprint}
-      noticeHeading={page.form?.noticeHeading}
-      noticeBody={page.form?.noticeBody}
-      tierAmounts={page.formTierAmounts}
-      defaultTierIndex={page.formDefaultTierIndex}
+      formUrl={page.formUrl}
     />
 
     {page.impactRungs && page.impactRungs.length > 0 && (

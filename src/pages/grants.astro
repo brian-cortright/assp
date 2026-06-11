@@ -20,6 +20,7 @@ interface GrantsPage {
   tocLinks?: NavItem[];
   body?: any[];
   form?: FormCopy;
+  formUrl?: string;
   formDisciplineOptions?: string[];
   formKindOptions?: string[];
   formUrgentEmail?: string;
@@ -81,13 +82,8 @@ const tocLinks: NavItem[] = page.tocLinks?.length
       heading={page.form?.heading}
       lede={page.form?.lede}
       requiredNote={page.form?.requiredNote}
-      submitLabel={page.form?.submitLabel}
       fineprint={page.form?.fineprint}
-      noticeHeading={page.form?.noticeHeading}
-      noticeBody={page.form?.noticeBody}
-      urgentEmail={page.formUrgentEmail}
-      disciplineOptions={page.formDisciplineOptions}
-      kindOptions={page.formKindOptions}
+      formUrl={page.formUrl}
     />
   </main>
 

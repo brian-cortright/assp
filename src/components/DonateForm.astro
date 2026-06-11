@@ -1,62 +1,34 @@
 ---
 /**
- * Placeholder donate form. The processor (Stripe / Donorbox / etc.) is not
- * yet stood up; this component captures the donor's intent (amount + email)
- * and shows a tasteful "we're not live yet" inline notice on submit. Swap
- * the action handler in the inline <script> when the processor is ready.
+ * Donation embed. Processing happens inside a Zeffy donation form; this
+ * component renders the page chrome (eyebrow / heading / lede) and embeds
+ * the form so donors don't leave the site.
  *
- * Visual contract (DESIGN.md):
- *   - Sand surface on Chalk page (no card-on-page).
- *   - Stone-Line 1px borders, 3px radius, mono labels above fields.
- *   - One Clay primary CTA. Counts as ONE Clay surface on the page.
- *
- * Accessibility contract:
- *   - Each required input has an inline error span wired via
- *     aria-describedby. On submit failure the script populates the span
- *     with the native validationMessage, sets aria-invalid on the input,
- *     and focuses the first invalid field. Errors clear as the user types.
- *   - On submit success the notice's <strong> takes focus (tabindex="-1"),
- *     which guarantees a screen-reader announcement instead of relying on
- *     aria-live heuristics (WCAG 4.1.3).
+ * The embed URL is sourced from Sanity (donatePage.formUrl). For a Zeffy
+ * "donation-form" URL we swap the path to "/embed/donation-form/" so the
+ * iframe-friendly version is rendered.
  */
 
 interface Props {
-  /** Section heading (e.g. "Give now" or "Apply for support"). */
-  heading?: string;
-  /** Mono kicker above the heading. */
-  eyebrow?: string;
-  /** Short prose under the heading. */
-  lede?: string;
-  /** Submit button label. */
-  submitLabel?: string;
-  /** Anchor id (used by sidebar TOCs and skip-links). */
   id?: string;
-  /** Small mono note under the lede (e.g. required-fields summary). */
+  eyebrow?: string;
+  heading?: string;
+  lede?: string;
   requiredNote?: string;
-  /** Fineprint shown beside the submit button. */
   fineprint?: string;
-  /** Post-submit notice heading (inside <strong>). */
-  noticeHeading?: string;
-  /** Post-submit notice body paragraph. */
-  noticeBody?: string;
-  /** Tier amounts (USD) shown as preset pills. */
-  tierAmounts?: number[];
-  /** Zero-based index of the tier preselected on load. */
-  defaultTierIndex?: number;
+  formUrl?: string;
+  formHeight?: number;
 }
 
 const {
-  heading: headingProp,
-  eyebrow: eyebrowProp,
-  lede: ledeProp,
-  submitLabel: submitLabelProp,
   id = 'give',
+  eyebrow: eyebrowProp,
+  heading: headingProp,
+  lede: ledeProp,
   requiredNote: requiredNoteProp,
   fineprint: fineprintProp,
-  noticeHeading: noticeHeadingProp,
-  noticeBody: noticeBodyProp,
-  tierAmounts: tierAmountsProp,
-  defaultTierIndex: defaultTierIndexProp,
+  formUrl,
+  formHeight = 1200,
 } = Astro.props;
 
 const heading = headingProp ?? 'Give now';
@@ -64,16 +36,22 @@ const eyebrow = eyebrowProp ?? 'Donate';
 const lede =
   ledeProp ??
   "Pick a number that means something to you. Leave your name and email. The online processor isn't wired up yet; when it is, you'll be first in line. Until then, the offline routes are below.";
-const submitLabel = submitLabelProp ?? 'Hold my spot';
 const requiredNote = requiredNoteProp ?? 'Name, email, and an amount are required.';
 const fineprint =
   fineprintProp ?? 'Tax-deductible to the extent permitted by law. EIN on request, no form to fill out.';
-const noticeHeading = noticeHeadingProp ?? "We've got you down.";
-const noticeBody =
-  noticeBodyProp ??
-  "Online giving isn't live yet. The day it ships, you'll get an email with the link. Want to give by check, stock, or DAF in the meantime? The instructions are just below.";
-const tierAmounts = tierAmountsProp?.length ? tierAmountsProp : [25, 50, 100, 250, 500];
-const defaultTierIndex = defaultTierIndexProp ?? 1;
+
+let embedSrc: string | null = null;
+if (formUrl) {
+  try {
+    const u = new URL(formUrl);
+    if (u.hostname.endsWith('zeffy.com')) {
+      u.pathname = u.pathname.replace('/donation-form/', '/embed/donation-form/');
+    }
+    embedSrc = u.toString();
+  } catch {
+    embedSrc = formUrl;
+  }
+}
 ---
 
 <section class="give-form" id={id} aria-labelledby={`${id}-h`}>
@@ -85,175 +63,42 @@ const defaultTierIndex = defaultTierIndexProp ?? 1;
       {requiredNote && <p class="give-form__required-note">{requiredNote}</p>}
     </header>
 
-    <form class="give-form__form" data-give-form novalidate>
-      <fieldset class="give-form__field give-form__field--tiers">
-        <legend class="give-form__label">Amount</legend>
-        <div class="give-form__tiers" role="radiogroup" aria-label="Donation amount">
-          {tierAmounts.map((amount, i) => (
-            <label class="give-form__tier">
-              <input
-                type="radio"
-                name="amount"
-                value={String(amount)}
-                checked={i === defaultTierIndex}
-              />
-              <span>${amount}</span>
-            </label>
-          ))}
-          <label class="give-form__tier give-form__tier--custom">
-            <input type="radio" name="amount" value="custom" />
-            <span>Other</span>
-          </label>
-        </div>
-        <label class="give-form__field give-form__field--inline" data-custom-field hidden>
-          <span class="give-form__label">Custom amount (USD)</span>
-          <input
-            type="number"
-            name="customAmount"
-            min="1"
-            step="1"
-            inputmode="numeric"
-            aria-describedby="give-customAmount-err"
-          />
-          <span class="give-form__error" id="give-customAmount-err" hidden></span>
-        </label>
-      </fieldset>
-
-      <div class="give-form__row">
-        <label class="give-form__field">
-          <span class="give-form__label">Name</span>
-          <input
-            type="text"
-            name="name"
-            autocomplete="name"
-            required
-            aria-describedby="give-name-err"
-          />
-          <span class="give-form__error" id="give-name-err" hidden></span>
-        </label>
-        <label class="give-form__field">
-          <span class="give-form__label">Email</span>
-          <input
-            type="email"
-            name="email"
-            autocomplete="email"
-            required
-            aria-describedby="give-email-err"
-          />
-          <span class="give-form__error" id="give-email-err" hidden></span>
-        </label>
+    {embedSrc ? (
+      <div class="give-form__embed">
+        <iframe
+          src={embedSrc}
+          title={heading}
+          loading="lazy"
+          width="100%"
+          height={formHeight}
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+          allow="payment *; clipboard-write"
+          allowtransparency="true"
+        >
+          Loading the donation form…
+        </iframe>
       </div>
+    ) : (
+      <p class="give-form__lede">
+        The donation form is being set up. Check back shortly.
+      </p>
+    )}
 
-      <label class="give-form__field">
-        <span class="give-form__label">Note <span class="give-form__optional">(optional)</span></span>
-        <textarea name="note" rows="3" placeholder="Riding for someone, dedicating the gift, anything we should know."></textarea>
-      </label>
-
-      <div class="give-form__actions">
-        <button type="submit" class="btn btn-primary">{submitLabel}</button>
-        {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
-      </div>
-
-      <div class="give-form__notice" data-give-notice hidden role="status">
-        <p>
-          <strong tabindex="-1">{noticeHeading}</strong>
-          {noticeBody && <> {noticeBody}</>}
-        </p>
-      </div>
-    </form>
+    {fineprint && <p class="give-form__fineprint">{fineprint}</p>}
   </div>
 </section>
 
-<script>
-  document.querySelectorAll('[data-give-form]').forEach((formEl) => {
-    const form = formEl as HTMLFormElement;
-    const customField = form.querySelector<HTMLElement>('[data-custom-field]');
-    const customInput = customField?.querySelector<HTMLInputElement>('input');
-    const notice = form.querySelector<HTMLElement>('[data-give-notice]');
-    const noticeHeading = notice?.querySelector<HTMLElement>('strong');
-
-    const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      const describedBy = input.getAttribute('aria-describedby');
-      if (!describedBy) return;
-      const errEl = document.getElementById(describedBy);
-      if (!errEl) return;
-      errEl.textContent = input.validationMessage;
-      errEl.hidden = false;
-      input.setAttribute('aria-invalid', 'true');
-    };
-    const clearError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      const describedBy = input.getAttribute('aria-describedby');
-      if (describedBy) {
-        const errEl = document.getElementById(describedBy);
-        if (errEl) {
-          errEl.hidden = true;
-          errEl.textContent = '';
-        }
-      }
-      input.removeAttribute('aria-invalid');
-    };
-
-    // Clear a field's error as the user fixes it.
-    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-      'input[aria-describedby], textarea[aria-describedby], select[aria-describedby]'
-    ).forEach((input) => {
-      const handler = () => {
-        if (input.checkValidity()) clearError(input);
-      };
-      input.addEventListener('input', handler);
-      input.addEventListener('change', handler);
-    });
-
-    // Toggle custom amount visibility + required state in tandem.
-    form.querySelectorAll<HTMLInputElement>('input[name="amount"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        if (!customField || !customInput) return;
-        const value = (form.elements.namedItem('amount') as RadioNodeList | null)?.value;
-        const isCustom = value === 'custom';
-        customField.hidden = !isCustom;
-        if (isCustom) {
-          customInput.setAttribute('required', '');
-          customInput.focus();
-        } else {
-          customInput.removeAttribute('required');
-          clearError(customInput);
-        }
-      });
-    });
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Clear any prior errors so we re-evaluate from scratch.
-      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-        '[aria-invalid="true"]'
-      ).forEach(clearError);
-
-      if (!form.checkValidity()) {
-        const invalids = Array.from(
-          form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-            ':invalid'
-          )
-        ).filter((el) => el.hasAttribute('aria-describedby'));
-        invalids.forEach(showError);
-        invalids[0]?.focus();
-        return;
-      }
-
-      if (notice) notice.hidden = false;
-      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>(
-        'input, textarea, button'
-      ).forEach((el) => {
-        el.disabled = true;
-      });
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      notice?.scrollIntoView({
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'nearest',
-      });
-      // Move focus to the notice heading so screen readers announce it
-      // reliably (don't depend on aria-live heuristics for first appearance).
-      noticeHeading?.focus({ preventScroll: true });
-    });
-  });
-</script>
+<style>
+  .give-form__embed {
+    width: 100%;
+  }
+  .give-form__embed iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fff;
+  }
+</style>
