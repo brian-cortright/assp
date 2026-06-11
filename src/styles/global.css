@@ -250,6 +250,16 @@ ul {
   border-color: var(--c-on-pine);
   background: oklch(97% 0.008 75 / 0.08);
 }
+.btn-outline-sand {
+  background: transparent;
+  color: var(--pine);
+  border-color: var(--pine);
+}
+.btn-outline-sand:hover {
+  background: var(--chalk);
+  color: var(--pine-deep);
+  border-color: var(--pine-deep);
+}
 .btn-terra {
   background: var(--c-primary);
   color: var(--c-on-primary);
