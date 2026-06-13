@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://actionsportssafetyproject.org/sitemap-index.xml
