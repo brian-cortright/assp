@@ -400,11 +400,13 @@ const aboutPage = {
     { _type: "navItem", label: "Governance", href: "#governance" },
     { _type: "navItem", label: "Board of directors", href: "#board" },
   ]),
+  missionHeading: "Our mission",
   missionBody: [
     p(
       "We fund tuition grants for medical certifications and run on-site response training at action sports community events. Every grant and every clinic targets the same outcome: a trained first responder closer to the next preventable tragedy.",
     ),
   ],
+  originHeading: "Origin",
   originBody: [
     p(
       'The action sports community is full of people who would help if they knew how. What is missing is access to the medical training that turns instinct into competence. We started Action Sports Safety Project because the gap between "wants to help" and "knows what to do" is the gap that costs lives.',
@@ -413,6 +415,7 @@ const aboutPage = {
       "We are based in California. Our founding board pairs lifelong skaters, climbers, and riders with practicing medical professionals. We meet quarterly, review grants monthly, and report annually.",
     ),
   ],
+  valuesHeading: "What we believe",
   valuesBody: [
     rich(
       "normal",
@@ -447,6 +450,7 @@ const aboutPage = {
       "bullet",
     ),
   ],
+  governanceHeading: "Governance",
   governanceBody: [
     p(
       "Action Sports Safety Project is a California public benefit corporation recognized as tax-exempt under section 501(c)(3) of the Internal Revenue Code. Donations are tax-deductible to the extent permitted by law. Our annual Form 990 will be made public following the conclusion of our first full operating year.",

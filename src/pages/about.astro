@@ -13,9 +13,13 @@ interface AboutPage {
   hero?: PageHero;
   tocHeading?: string;
   tocLinks?: NavItem[];
+  missionHeading?: string;
   missionBody?: any[];
+  originHeading?: string;
   originBody?: any[];
+  valuesHeading?: string;
   valuesBody?: any[];
+  governanceHeading?: string;
   governanceBody?: any[];
   boardEyebrow?: string;
   boardHeadline?: string;
@@ -67,16 +71,16 @@ const tocLinks: NavItem[] = p.tocLinks?.length
         </aside>
 
         <div class="prose">
-          <h2 id="mission">Our mission</h2>
+          <h2 id="mission">{p.missionHeading ?? 'Our mission'}</h2>
           <PortableText value={p.missionBody} />
 
-          <h2 id="origin">Origin</h2>
+          <h2 id="origin">{p.originHeading ?? 'Origin'}</h2>
           <PortableText value={p.originBody} />
 
-          <h2 id="values">What we believe</h2>
+          <h2 id="values">{p.valuesHeading ?? 'What we believe'}</h2>
           <PortableText value={p.valuesBody} />
 
-          <h2 id="governance">Governance</h2>
+          <h2 id="governance">{p.governanceHeading ?? 'Governance'}</h2>
           <PortableText value={p.governanceBody} />
         </div>
       </div>
@@ -98,7 +102,6 @@ const tocLinks: NavItem[] = p.tocLinks?.length
           <ol class="board-roster" role="list">
             {boardList.map((member, i) => (
               <li class="board-row">
-                <span class="board-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <p class="board-name">{member.name}</p>
                 <p class="board-role">{member.role}</p>
               </li>

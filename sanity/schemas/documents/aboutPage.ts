@@ -21,7 +21,14 @@ export const aboutPage = defineType({
       title: "In-page TOC links",
       type: "array",
       of: [{ type: "navItem" }],
-      description: "Sidebar links. Anchors must match the section ids on the page (#mission, #origin, #values, #governance, #board).",
+      description:
+        "Sidebar links. Anchors must match the section ids on the page (#mission, #origin, #values, #governance, #board).",
+    }),
+    defineField({
+      name: "missionHeading",
+      title: "Mission Heading",
+      type: "string",
+      description: 'Section H2. Defaults to "Our mission".',
     }),
     defineField({
       name: "missionBody",
@@ -31,16 +38,34 @@ export const aboutPage = defineType({
       description: "Rich text content for the mission section.",
     }),
     defineField({
+      name: "originHeading",
+      title: "Origin Heading",
+      type: "string",
+      description: 'Section H2. Defaults to "Origin".',
+    }),
+    defineField({
       name: "originBody",
       title: "Origin",
       type: "array",
       of: [{ type: "block" }],
     }),
     defineField({
+      name: "valuesHeading",
+      title: "Values Heading",
+      type: "string",
+      description: 'Section H2. Defaults to "What we believe".',
+    }),
+    defineField({
       name: "valuesBody",
       title: "What We Believe",
       type: "array",
       of: [{ type: "block" }],
+    }),
+    defineField({
+      name: "governanceHeading",
+      title: "Governance Heading",
+      type: "string",
+      description: 'Section H2. Defaults to "Governance".',
     }),
     defineField({
       name: "governanceBody",
@@ -52,7 +77,8 @@ export const aboutPage = defineType({
       name: "boardEyebrow",
       title: "Board Eyebrow",
       type: "string",
-      description: 'Mono kicker above the board headline. Defaults to "Who we are".',
+      description:
+        'Mono kicker above the board headline. Defaults to "Who we are".',
     }),
     defineField({
       name: "boardHeadline",
