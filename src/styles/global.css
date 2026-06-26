@@ -5,9 +5,18 @@
  * ground, Stone supports, Ink is body type. All hues sit between 35 deg
  * (Safety Flare) and 152 deg (Green Valley); nothing reads cool or
  * clinical. See DESIGN.md for the canonical spec.
- * Type: Fraunces display, JetBrains Mono for everything else.
+ * Type: Inter display, JetBrains Mono for everything else.
  * 4pt spacing scale.
  */
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-VariableFont-Regular.ttf")
+    format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: "JetBrains Mono";
@@ -119,11 +128,11 @@
   --c-focus: var(--safety-flare);
 
   /* Typography */
-  --f-display: "Fraunces", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-body:
     "JetBrains Mono", ui-monospace, Menlo, Monaco, "Courier New", monospace;
   --f-mono: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
-  --w-display: 500;
+  --w-display: 700;
 
   /* Type scale */
   --t-xs: 0.75rem;
