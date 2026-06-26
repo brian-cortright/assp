@@ -1,46 +1,69 @@
 /* Action Sports Safety Project — global tokens + base styles.
- * Terrain palette: Pine anchors trust (dark slab, header, footer, dark
- * sections), Clay carries action (CTAs only), Sand is warm paper, Chalk
- * is page ground, Stone supports, Ink is body type. All hues sit
- * between 41 deg (clay) and 158 deg (pine); nothing reads cool or clinical.
- * See DESIGN.md for the canonical spec.
- * Type: Fraunces display, Inter body, JetBrains Mono meta.
+ * Terrain palette: Green Valley (#233329) anchors trust — dark slab,
+ * header, footer, dark sections. Safety Flare (#ff6339) carries action
+ * — CTAs only. Dusty Trails (#ede4d1) is warm paper. Chalk is page
+ * ground, Stone supports, Ink is body type. All hues sit between 35 deg
+ * (Safety Flare) and 152 deg (Green Valley); nothing reads cool or
+ * clinical. See DESIGN.md for the canonical spec.
+ * Type: Fraunces display, JetBrains Mono for everything else.
  * 4pt spacing scale.
  */
 
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Regular.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ── Terrain palette (canonical) ────────────────────────────────────── */
-  --pine: oklch(33% 0.04 158); /* #2D4A3E — trust anchor, dark slab */
-  --pine-deep: oklch(26% 0.04 158); /* #1E332B — scrolled header, depth */
-  --pine-line: oklch(40% 0.04 158); /* hairline on Pine surfaces */
-  --pine-soft: oklch(82% 0.022 145); /* light pine wash, accents */
+  --green-valley: oklch(
+    25% 0.022 152
+  ); /* #233329 — Green Valley, trust anchor */
+  --green-valley-deep: oklch(19% 0.022 152); /* deeper slab, scrolled header */
+  --green-valley-line: oklch(
+    33% 0.022 152
+  ); /* hairline on Green Valley surfaces */
+  --green-valley-soft: oklch(
+    82% 0.022 145
+  ); /* light Green Valley wash, accents */
 
-  --clay: oklch(58% 0.16 41); /* #C4622D — action color, CTAs only */
-  --clay-deep: oklch(48% 0.15 41); /* #A24E20 — hover/active state */
-  --clay-hover: oklch(50% 0.155 41);
-  --clay-tint: oklch(78% 0.09 41); /* light clay, for text on Pine */
-  --clay-pale: oklch(92% 0.05 41); /* #F2DCC9 — washes, chip bg */
+  --safety-flare: oklch(69% 0.205 35); /* #ff6339 — Safety Flare, CTAs only */
+  --safety-flare-deep: oklch(60% 0.195 35); /* hover/active state */
+  --safety-flare-hover: oklch(63% 0.2 35);
+  --safety-flare-tint: oklch(
+    80% 0.13 35
+  ); /* light Safety Flare, for text on Green Valley */
+  --safety-flare-pale: oklch(92% 0.05 35); /* washes, chip bg */
 
-  --sand: oklch(92% 0.03 80); /* #F2E8D9 — warm paper surface */
-  --sand-line: oklch(82% 0.03 75); /* sand-on-sand divider */
+  --dusty-trails: oklch(91% 0.022 85); /* #ede4d1 — Dusty Trails, warm paper */
+  --dusty-trails-line: oklch(
+    82% 0.025 80
+  ); /* Dusty Trails-on-Dusty Trails divider */
 
   --chalk: oklch(97% 0.008 75); /* #FAF7F2 — page ground (never #fff) */
 
   --stone: oklch(56% 0.015 60); /* #8B8178 — support text, captions */
   --stone-line: oklch(82% 0.012 70); /* #C6BFB5 — borders on light */
-  --stone-soft: oklch(80% 0.022 60); /* body-on-pine sub */
+  --stone-soft: oklch(80% 0.022 60); /* body-on-Green Valley sub */
 
   --ink: oklch(20% 0.008 50); /* #1C1917 — body type (never #000) */
   --ink-2: oklch(34% 0.012 55); /* secondary body */
   --ink-3: oklch(48% 0.012 55); /* tertiary / meta */
 
   /* On-color text */
-  --c-on-primary: var(--chalk); /* text on Clay */
-  --c-on-primary-sub: oklch(92% 0.04 41); /* sub-text on Clay */
-  --c-on-pine: var(--chalk); /* text on Pine */
-  --c-on-pine-sub: var(--pine-soft); /* sub-text on Pine */
-  --c-on-bark: var(--c-on-pine); /* legacy alias */
-  --c-on-bark-sub: var(--c-on-pine-sub);
+  --c-on-primary: var(--chalk); /* text on Safety Flare */
+  --c-on-primary-sub: oklch(92% 0.04 35); /* sub-text on Safety Flare */
+  --c-on-green-valley: var(--chalk); /* text on Green Valley */
+  --c-on-green-valley-sub: var(
+    --green-valley-soft
+  ); /* sub-text on Green Valley */
+  --c-on-pine: var(--c-on-green-valley); /* legacy alias */
+  --c-on-pine-sub: var(--c-on-green-valley-sub);
+  --c-on-bark: var(--c-on-green-valley); /* legacy alias */
+  --c-on-bark-sub: var(--c-on-green-valley-sub);
 
   /* Semantic surface roles */
   --c-surface: var(--chalk);
@@ -52,28 +75,39 @@
   --c-text-3: var(--ink-3);
 
   /* Action aliases — selectors throughout reference these names. */
-  --c-primary: var(--clay);
-  --c-primary-dark: var(--clay-deep);
-  --c-primary-hover: var(--clay-hover);
-  --c-primary-tint: var(--clay-tint);
-  --c-primary-pale: var(--clay-pale);
-  --c-primary-ghost: oklch(95% 0.025 41);
+  --c-primary: var(--safety-flare);
+  --c-primary-dark: var(--safety-flare-deep);
+  --c-primary-hover: var(--safety-flare-hover);
+  --c-primary-tint: var(--safety-flare-tint);
+  --c-primary-pale: var(--safety-flare-pale);
+  --c-primary-ghost: oklch(95% 0.025 35);
 
   /* Legacy aliases — old names now point at the canonical terrain palette.
-   * --bark and --dust were the previous walnut/beige; today the dark slab
-   * is Pine and the paper slab is Sand. Selectors using --bark, --dust,
-   * --canvas, --stone-deep keep working without per-selector edits. */
-  --bark: var(--pine);
-  --bark-line: var(--pine-line);
-  --dust: var(--sand);
+   * --pine, --clay, --sand and the older --bark, --dust were prior
+   * iterations of the dark slab, action color, and paper slab. Selectors
+   * using any of these keep working without per-selector edits. */
+  --pine: var(--green-valley);
+  --pine-deep: var(--green-valley-deep);
+  --pine-line: var(--green-valley-line);
+  --pine-soft: var(--green-valley-soft);
+  --clay: var(--safety-flare);
+  --clay-deep: var(--safety-flare-deep);
+  --clay-hover: var(--safety-flare-hover);
+  --clay-tint: var(--safety-flare-tint);
+  --clay-pale: var(--safety-flare-pale);
+  --sand: var(--dusty-trails);
+  --sand-line: var(--dusty-trails-line);
+  --bark: var(--green-valley);
+  --bark-line: var(--green-valley-line);
+  --dust: var(--dusty-trails);
   --canvas: var(--chalk);
   --stone-deep: var(--stone);
   --moss: oklch(58% 0.07 140); /* kept for compatibility; unused */
   --lichen: var(--moss);
 
-  /* Footer is Pine — matches the sticky header. */
-  --c-footer: var(--pine);
-  --c-footer-border: var(--pine-line);
+  /* Footer is Green Valley — matches the sticky header. */
+  --c-footer: var(--green-valley);
+  --c-footer-border: var(--green-valley-line);
   --c-footer-text: oklch(92% 0.022 145);
   --c-footer-sub: oklch(72% 0.025 145);
 
@@ -82,11 +116,12 @@
   --c-error-bg: oklch(96% 0.025 28);
   --c-success: oklch(48% 0.12 158);
   --c-success-bg: oklch(94% 0.04 158);
-  --c-focus: var(--clay);
+  --c-focus: var(--safety-flare);
 
   /* Typography */
   --f-display: "Fraunces", "Source Serif 4", Georgia, "Times New Roman", serif;
-  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-body:
+    "JetBrains Mono", ui-monospace, Menlo, Monaco, "Courier New", monospace;
   --f-mono: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
   --w-display: 500;
 
@@ -235,16 +270,16 @@ ul {
 }
 .btn-white {
   background: var(--chalk);
-  color: var(--pine);
+  color: var(--green-valley);
 }
 .btn-white:hover {
-  background: var(--sand);
-  color: var(--pine-deep);
+  background: var(--dusty-trails);
+  color: var(--green-valley-deep);
 }
 .btn-outline {
   background: transparent;
   color: var(--c-on-pine);
-  border-color: var(--pine-line);
+  border-color: var(--green-valley-line);
 }
 .btn-outline:hover {
   border-color: var(--c-on-pine);
@@ -252,13 +287,13 @@ ul {
 }
 .btn-outline-sand {
   background: transparent;
-  color: var(--pine);
-  border-color: var(--pine);
+  color: var(--green-valley);
+  border-color: var(--green-valley);
 }
 .btn-outline-sand:hover {
   background: var(--chalk);
-  color: var(--pine-deep);
-  border-color: var(--pine-deep);
+  color: var(--green-valley-deep);
+  border-color: var(--green-valley-deep);
 }
 .btn-terra {
   background: var(--c-primary);
@@ -274,13 +309,13 @@ ul {
 }
 .btn-ghost {
   background: transparent;
-  color: var(--pine);
+  color: var(--green-valley);
   border-color: var(--c-border-strong);
 }
 .btn-ghost:hover {
-  border-color: var(--pine);
-  color: var(--pine-deep);
-  background: var(--sand);
+  border-color: var(--green-valley);
+  color: var(--green-valley-deep);
+  background: var(--dusty-trails);
 }
 .btn-terra:hover {
   background: var(--c-primary-dark);
@@ -304,31 +339,25 @@ ul {
     border-color var(--dur-base) var(--ease-out);
 }
 .nav.nav--scrolled {
-  background: var(--pine-deep);
-  border-bottom-color: var(--pine-line);
+  background: var(--green-valley-deep);
+  border-bottom-color: var(--green-valley-line);
 }
 
 .nav-logo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   flex-shrink: 0;
 }
-.nav-logo__name {
-  font-family: var(--f-display);
-  font-weight: var(--w-display);
-  font-size: 1.0625rem;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: var(--c-on-bark);
+.nav-logo__img {
+  display: block;
+  height: 32px;
+  width: auto;
 }
-.nav-logo__tag {
-  font-family: var(--f-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-on-bark-sub);
+@media (max-width: 600px) {
+  .nav-logo__img {
+    height: 28px;
+  }
 }
 
 .nav-links {
@@ -419,7 +448,7 @@ ul {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: var(--pine);
+  background: var(--green-valley);
   display: none;
   flex-direction: column;
   padding: 88px var(--s-6) var(--s-8);
@@ -436,7 +465,7 @@ ul {
   color: var(--c-on-pine-sub);
   text-decoration: none;
   padding: var(--s-5) 0;
-  border-bottom: 1px solid var(--pine-line);
+  border-bottom: 1px solid var(--green-valley-line);
   transition: color var(--dur-fast) var(--ease-out);
 }
 .nav-drawer a:hover {
@@ -446,7 +475,7 @@ ul {
   margin-top: var(--s-8);
   font-style: normal;
   text-align: center;
-  background: var(--clay);
+  background: var(--safety-flare);
   color: var(--c-on-primary);
   border-radius: var(--r-sm);
   padding: var(--s-5);
@@ -460,7 +489,7 @@ ul {
 /* Hero — Pine drench, topography in white stroke, single Clay CTA inside. */
 .hero {
   min-height: 100svh;
-  background: var(--pine);
+  background: var(--green-valley);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -475,7 +504,7 @@ ul {
   margin: 0;
   width: 100%;
   aspect-ratio: 3 / 2;
-  background: var(--pine);
+  background: var(--green-valley);
   overflow: hidden;
   border-bottom: 1px solid var(--c-border);
 }
@@ -532,7 +561,7 @@ ul {
 }
 .hero-rule {
   height: 1px;
-  background: var(--pine-line);
+  background: var(--green-valley-line);
   margin: 0 var(--s-8);
 }
 .hero-toc {
@@ -675,9 +704,9 @@ ul {
 
 /* Grants */
 .grants {
-  background: var(--sand);
-  border-top: 1px solid var(--sand-line);
-  border-bottom: 1px solid var(--sand-line);
+  background: var(--dusty-trails);
+  border-top: 1px solid var(--dusty-trails-line);
+  border-bottom: 1px solid var(--dusty-trails-line);
   padding: var(--s-24) var(--s-8);
 }
 .grants-inner {
@@ -743,7 +772,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-2xl);
   font-weight: 400;
-  color: var(--pine);
+  color: var(--green-valley);
   line-height: 1;
   padding-top: 3px;
   font-variant-numeric: tabular-nums;
@@ -789,7 +818,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-xs);
   font-weight: 500;
-  color: var(--pine);
+  color: var(--green-valley);
   letter-spacing: 0.05em;
   min-width: 76px;
 }
@@ -841,7 +870,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-base);
   font-weight: 500;
-  color: var(--pine);
+  color: var(--green-valley);
   min-width: 60px;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
@@ -945,7 +974,7 @@ ul {
   font-family: var(--f-mono);
   font-size: var(--t-base);
   color: var(--c-text);
-  background: var(--sand);
+  background: var(--dusty-trails);
   border: 2px solid var(--c-border-strong);
   border-radius: var(--r-sm);
   min-height: 44px;
@@ -958,7 +987,7 @@ ul {
 .custom-input:focus {
   outline: 2px solid var(--c-focus);
   outline-offset: 2px;
-  border-color: var(--pine);
+  border-color: var(--green-valley);
 }
 .custom-input[aria-invalid="true"] {
   border-color: var(--c-error);
@@ -983,7 +1012,7 @@ ul {
   padding: var(--s-3) var(--s-4);
   font-size: var(--t-base);
   color: var(--c-text);
-  background: var(--sand);
+  background: var(--dusty-trails);
   border: 2px solid var(--c-border-strong);
   border-radius: var(--r-sm);
   min-height: 44px;
@@ -999,7 +1028,7 @@ ul {
 .form-field input:focus {
   outline: 2px solid var(--c-focus);
   outline-offset: 2px;
-  border-color: var(--pine);
+  border-color: var(--green-valley);
 }
 .form-field input[aria-invalid="true"] {
   border-color: var(--c-error);
@@ -1209,13 +1238,13 @@ ul {
   color: var(--stone);
 }
 .prose a {
-  color: var(--pine);
+  color: var(--green-valley);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 .prose a:hover {
-  color: var(--pine-deep);
+  color: var(--green-valley-deep);
 }
 .prose hr {
   border: 0;
@@ -1255,7 +1284,7 @@ ul {
   color: var(--c-text-3);
 }
 .page-aside__heading {
-  color: var(--pine);
+  color: var(--green-valley);
   margin-bottom: var(--s-4);
 }
 .page-aside__list {
@@ -1311,7 +1340,7 @@ ul {
   line-height: 1.3;
 }
 .fact dd a {
-  color: var(--pine);
+  color: var(--green-valley);
   text-decoration: none;
 }
 .fact dd a:hover {
@@ -1362,7 +1391,7 @@ ul {
    PROGRAMS — sand slab, two stacked programs
 =========================================== */
 .programs {
-  background: var(--sand);
+  background: var(--dusty-trails);
   padding: var(--s-24) var(--s-8);
   position: relative;
 }
@@ -1375,11 +1404,11 @@ ul {
   grid-template-columns: 5fr 7fr;
   gap: var(--s-16);
   padding: var(--s-16) 0;
-  border-top: 1px solid var(--sand-line);
+  border-top: 1px solid var(--dusty-trails-line);
   align-items: start;
 }
 .program:last-child {
-  border-bottom: 1px solid var(--sand-line);
+  border-bottom: 1px solid var(--dusty-trails-line);
 }
 
 /* With photo: three-column magazine layout. head | text | photo (square).
@@ -1412,7 +1441,7 @@ ul {
   margin: 0;
   aspect-ratio: 1 / 1;
   border: 1px solid var(--stone-line);
-  background: var(--sand);
+  background: var(--dusty-trails);
   overflow: hidden;
 }
 .program-photo img {
@@ -1427,7 +1456,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--pine);
+  color: var(--green-valley);
   margin-bottom: var(--s-6);
   display: flex;
   gap: var(--s-3);
@@ -1435,7 +1464,7 @@ ul {
 }
 .program-index__num {
   font-variant-numeric: tabular-nums;
-  color: var(--pine);
+  color: var(--green-valley);
   font-size: var(--t-base);
 }
 .program-title {
@@ -1490,7 +1519,7 @@ ul {
   gap: var(--s-5);
   padding: var(--s-8) 0 var(--s-16);
   margin-bottom: var(--s-12);
-  border-bottom: 1px solid var(--sand-line);
+  border-bottom: 1px solid var(--dusty-trails-line);
 }
 .programs-entrance__eyebrow {
   font-family: var(--f-mono);
@@ -1498,7 +1527,7 @@ ul {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--pine);
+  color: var(--green-valley);
 }
 .programs-entrance__headline {
   font-family: var(--f-display);
@@ -1566,7 +1595,7 @@ ul {
   font-family: var(--f-display);
   font-weight: var(--w-display);
   font-size: clamp(1.25rem, 1.4vw + 0.6rem, 1.5rem);
-  color: var(--pine);
+  color: var(--green-valley);
   letter-spacing: -0.015em;
   line-height: 1.15;
   margin: 0;
@@ -1701,12 +1730,12 @@ ul {
    Clay is tertiary: no full-section drench.
 =========================================== */
 .donate-cta {
-  background: var(--sand);
+  background: var(--dusty-trails);
   padding: var(--s-20) var(--s-8);
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--sand-line);
-  border-bottom: 1px solid var(--sand-line);
+  border-top: 1px solid var(--dusty-trails-line);
+  border-bottom: 1px solid var(--dusty-trails-line);
 }
 .donate-cta-inner {
   max-width: 1200px;
@@ -1755,12 +1784,16 @@ ul {
   gap: var(--s-12);
   margin-bottom: var(--s-12);
 }
-.footer-brand__name {
-  font-family: var(--f-display);
-  font-weight: var(--w-display);
-  font-size: var(--t-lg);
-  color: var(--c-footer-text);
-  margin-bottom: var(--s-3);
+.footer-brand__logo {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--s-5);
+  text-decoration: none;
+}
+.footer-brand__logo img {
+  display: block;
+  height: 44px;
+  width: auto;
 }
 .footer-brand__desc {
   font-size: var(--t-sm);
@@ -1967,9 +2000,9 @@ ul {
    Sand surface on Chalk page; mono labels above fields; one Clay primary.
 =========================================== */
 .give-form {
-  background: var(--sand);
-  border-top: 1px solid var(--sand-line);
-  border-bottom: 1px solid var(--sand-line);
+  background: var(--dusty-trails);
+  border-top: 1px solid var(--dusty-trails-line);
+  border-bottom: 1px solid var(--dusty-trails-line);
   padding: var(--s-20) var(--s-8);
 }
 .give-form__inner {
@@ -2074,7 +2107,7 @@ ul {
 .give-form__field select:focus-visible {
   outline: 2px solid var(--c-focus);
   outline-offset: 2px;
-  border-color: var(--clay);
+  border-color: var(--safety-flare);
 }
 .give-form__field input:disabled,
 .give-form__field textarea:disabled,
@@ -2130,12 +2163,12 @@ ul {
     color var(--dur-fast) var(--ease-out);
 }
 .give-form__tier:hover span {
-  border-color: var(--pine);
+  border-color: var(--green-valley);
 }
 .give-form__tier input:checked + span {
-  background: var(--pine);
+  background: var(--green-valley);
   color: var(--chalk);
-  border-color: var(--pine);
+  border-color: var(--green-valley);
 }
 .give-form__tier input:focus-visible + span {
   outline: 2px solid var(--c-focus);
@@ -2188,7 +2221,7 @@ ul {
   border-radius: 2px;
 }
 .give-form__notice a {
-  color: var(--pine);
+  color: var(--green-valley);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -2286,7 +2319,7 @@ ul {
   flex: 1;
 }
 .faq-list .faq-item details[open] .faq-item__q {
-  color: var(--pine);
+  color: var(--green-valley);
 }
 .faq-item__icon {
   flex-shrink: 0;
@@ -2312,7 +2345,7 @@ ul {
   transform: translateY(-50%) rotate(90deg);
 }
 .faq-item details[open] .faq-item__icon {
-  color: var(--pine);
+  color: var(--green-valley);
 }
 .faq-item details[open] .faq-item__icon::after {
   transform: translateY(-50%) rotate(0deg);
@@ -2323,7 +2356,7 @@ ul {
   border-radius: 2px;
 }
 .faq-item summary:hover .faq-item__q {
-  color: var(--pine);
+  color: var(--green-valley);
 }
 .faq-item__a {
   margin-top: var(--s-3);

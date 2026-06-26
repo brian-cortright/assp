@@ -54,7 +54,17 @@ const isExternal = (href: string) =>
 <footer class="footer" aria-label="Site footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <p class="footer-brand__name">{siteName}</p>
+      <a href="/" class="footer-brand__logo" aria-label={`${siteName}, home`}>
+        <img
+          src="/images/logos/ASSP_Logo_Combo_Horizontal_Tan.svg"
+          alt=""
+          width="506"
+          height="103"
+          decoding="async"
+          loading="lazy"
+        />
+        <span class="visually-hidden">{siteName}</span>
+      </a>
       <p class="footer-brand__desc">
         {settings.footerDescription ??
           'Life-saving education for the action sports community. Tuition grants for medical certifications. Emergency response training at community events.'}

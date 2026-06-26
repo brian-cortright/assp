@@ -29,10 +29,15 @@ const navLinks: NavLink[] = settings.navLinks?.length
 
 <nav class="nav" id="site-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label={`${settings.siteName ?? 'Action Sports Safety Project'}, home`}>
-    <span class="nav-logo__name">{settings.siteName ?? 'Action Sports Safety Project'}</span>
-    {settings.tagline && (
-      <span class="nav-logo__tag" aria-hidden="true">{settings.tagline}</span>
-    )}
+    <img
+      class="nav-logo__img"
+      src="/images/logos/ASSP_Logo_Combo_Horizontal_Tan.svg"
+      alt=""
+      width="506"
+      height="104"
+      decoding="async"
+    />
+    <span class="visually-hidden">{settings.siteName ?? 'Action Sports Safety Project'}</span>
   </a>
   <ul class="nav-links" role="list">
     {navLinks.map((link) => (
